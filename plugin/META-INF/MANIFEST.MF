@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: nl.mwensveen.derivedresourcemarker.drm-plugin
+Bundle-SymbolicName: drm-plugin;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Activator: nl.mwensveen.derivedresourcemarker.plugin.Plugin
+Bundle-Vendor: MWensveen.nl
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ com.google.guava;bundle-version="15.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Import-Package: org.eclipse.core.resources
