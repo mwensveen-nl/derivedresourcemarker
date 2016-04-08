@@ -3,8 +3,11 @@
    <description url="http://constantnameconveter.mwensveen.nl">
       MWensveen.nl Constant name Converter: Eclipse Plugin
    </description>
-   <feature url="features/drm-feature-1.0.0.jar" id="drm-feature" version="1.0.0">
-      <category name="MWensveen.nl derivedresourcemarker"/>
+   <feature url="features/drm-feature_1.0.0.jar" id="drm-feature" version="1.0.0">
+      <category name="deriveresourcemarker.category"/>
    </feature>
-   <category-def name="MWensveen.nl deriveresourcemarker" label="MWensveen.nl Derived Resource Marker"/>
+   <bundle id="drm-plugin" version="1.0.0">
+      <category name="deriveresourcemarker.category"/>
+   </bundle>
+   <category-def name="deriveresourcemarker.category" label="MWensveen.nl Derived Resource Marker"/>
 </site>
