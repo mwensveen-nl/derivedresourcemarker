@@ -65,32 +65,35 @@ public class PreferenceManager {
 	public static Names getPreferencesForFolderName() {
 		IPreferenceStore store = Plugin.getDefault().getPreferenceStore();
 		String value = store.getString(PreferenceConstants.FOLDER_NAME);
-		return deserialize(value);
-
+		Names names = deserialize(value);
+		if (names == null) {
+			return getDefaultPreferencesForFolderNames();
+		}
+		return names;
 	}
 
 	public static Names getPreferencesForPomPackaging() {
 		IPreferenceStore store = Plugin.getDefault().getPreferenceStore();
 		String value = store.getString(PreferenceConstants.POM_PACKAGING);
-		return deserialize(value);
-
+		Names names = deserialize(value);
+		if (names == null) {
+			return getDefaultPreferencesForPomPackaging();
+		}
+		return names;
 	}
 
 	private static Names deserialize(String value) {
-		Names names = new Names();
+		Names names = null;
 		try {
 			ByteArrayInputStream bis = new ByteArrayInputStream(BaseEncoding.base64().decode(value));
 			ObjectInputStream ois = new ObjectInputStream(bis);
 			names = (Names) ois.readObject();
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			// ignore
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			// ignore
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			// ignore
 		}
 		return names;
 	}

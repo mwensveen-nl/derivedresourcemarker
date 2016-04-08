@@ -88,6 +88,7 @@ public class DRMPreferencePage extends PreferencePage implements IWorkbenchPrefe
 			@Override
 			public void widgetSelected(SelectionEvent event) {
 				folderNameList.add(newfolderNameText.getText(), folderNameList.getItemCount());
+				newfolderNameText.setText("");
 			}
 		});
 
@@ -141,6 +142,8 @@ public class DRMPreferencePage extends PreferencePage implements IWorkbenchPrefe
 			@Override
 			public void widgetSelected(SelectionEvent event) {
 				pomPackagingList.add(newPomPackagingText.getText(), pomPackagingList.getItemCount());
+				newPomPackagingText.setText("");
+				;
 			}
 		});
 
