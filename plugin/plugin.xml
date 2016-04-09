@@ -9,15 +9,16 @@
             visible="true"
             id="nl.mwensveen.derivedresourcemarker.actionSet">
          <menu
-               label="Derived Resource Marker"
-               id="nl.mwensveen.derivedresourcemarker.menu">
+               icon="icons/icon16x16.png"
+               id="nl.mwensveen.derivedresourcemarker.menu"
+               label="Derived Resource Marker">
             <separator
                   name="nl.mwensveen.derivedresourcemarker.seperator">
             </separator>
          </menu>
          <action
                label="Derived Resource Marker"
-               icon="icons/folder.png"
+               icon="icons/icon16x16.png"
                class="nl.mwensveen.derivedresourcemarker.action.Action"
                tooltip="Mark resources in all projects as derived"
                menubarPath="nl.mwensveen.derivedresourcemarker.menu/nl.mwensveen.derivedresourcemarker.group"
