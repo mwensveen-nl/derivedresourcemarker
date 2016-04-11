@@ -11,13 +11,10 @@
 <feature
       id="drm-feature"
       label="%featureName"
-      version="1.0.0"
+      version="1.0.1"
       provider-name="%providerName"
       plugin="drm-plugin">
 
-   <description>
-      %description
-   </description>
 
    <copyright>
       %copyright
@@ -31,7 +28,7 @@
          id="drm-plugin"
          download-size="0"
          install-size="0"
-         version="1.0.0"
+         version="1.0.1"
          unpack="false"/>
 
 </feature>
