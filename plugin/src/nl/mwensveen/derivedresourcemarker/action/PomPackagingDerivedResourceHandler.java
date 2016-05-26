@@ -8,6 +8,7 @@ import nl.mwensveen.derivedresourcemarker.preferences.PreferenceManager;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.Path;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -20,7 +21,10 @@ public class PomPackagingDerivedResourceHandler implements DerivedResourceHandle
 
 	@Override
 	public void initProject(IProject project) {
-		IFile pom = project.getFile("/pom.xml");
+		IFile pom = null;
+		if (project.exists(new Path("/pom.xml"))) {
+			pom = project.getFile("/pom.xml");
+		}
 		if (pom != null) {
 			try {
 				String packaging = getPomPackaging(pom);
@@ -28,7 +32,8 @@ public class PomPackagingDerivedResourceHandler implements DerivedResourceHandle
 			} catch (Exception e) {
 				System.out.println(e);
 			}
-
+		} else {
+			isDerivedPomPackage = false;
 		}
 	}
 

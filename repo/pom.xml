@@ -5,10 +5,10 @@
 
   <parent>
       <groupId>nl.mwensveen.derivedresourcemarker</groupId>
-       <artifactId>drm-project</artifactId>
-       <version>1.0.1</version>
+       <artifactId>nl.mwensveen.eclipse.plugins.drm-project</artifactId>
+       <version>1.1.0</version>
   </parent>
-  <artifactId>drm-repo</artifactId>
+  <artifactId>nl.mwensveen.eclipse.plugins.drm-repo</artifactId>
   <packaging>eclipse-repository</packaging>
   <name>Derived Resource Marker - Repo</name>
 </project>

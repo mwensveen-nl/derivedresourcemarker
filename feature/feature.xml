@@ -9,12 +9,11 @@
 
 -->
 <feature
-      id="drm-feature"
+      id="nl.mwensveen.eclipse.plugins.drm-feature"
       label="%featureName"
-      version="1.0.1"
+      version="1.1.0"
       provider-name="%providerName"
-      plugin="drm-plugin">
-
+      plugin="nl.mwensveen.eclipse.plugins.drm-plugin">
 
    <copyright>
       %copyright
@@ -25,10 +24,10 @@
    </license>
 
    <plugin
-         id="drm-plugin"
+         id="nl.mwensveen.eclipse.plugins.drm-plugin"
          download-size="0"
          install-size="0"
-         version="1.0.1"
+         version="0.0.0"
          unpack="false"/>
 
 </feature>

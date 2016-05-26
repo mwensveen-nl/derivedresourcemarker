@@ -3,10 +3,10 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
        <groupId>nl.mwensveen.derivedresourcemarker</groupId>
-       <artifactId>drm-project</artifactId>
-       <version>1.0.1</version>
+       <artifactId>nl.mwensveen.eclipse.plugins.drm-project</artifactId>
+       <version>1.1.0</version>
 	</parent>
-	<artifactId>drm-feature</artifactId>
+	<artifactId>nl.mwensveen.eclipse.plugins.drm-feature</artifactId>
 	<name>Derived Resource Marker - Feature</name>
 	<packaging>eclipse-feature</packaging>
 	<build>

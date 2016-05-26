@@ -10,6 +10,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
@@ -24,6 +25,7 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 public class Action implements IWorkbenchWindowActionDelegate {
 
 	private List<DerivedResourceHandler> handlers;
+	private Shell parentShell;
 
 	public Action() {
 		handlers = new ArrayList<DerivedResourceHandler>();
@@ -39,6 +41,14 @@ public class Action implements IWorkbenchWindowActionDelegate {
 	 */
 	@Override
 	public void run(IAction action) {
+		PopupDialog popupDialog = new PopupDialog(parentShell);
+		popupDialog.open();
+		int returnCode = popupDialog.getReturnCode();
+		if (PopupDialog.CANCEL == returnCode) {
+			return;
+		}
+		boolean unmark = PopupDialog.MARK_UNMARK_ID == returnCode;
+
 		// init the handlers first
 		for (DerivedResourceHandler derivedResourceHandler : handlers) {
 			derivedResourceHandler.init();
@@ -50,7 +60,7 @@ public class Action implements IWorkbenchWindowActionDelegate {
 		for (IProject project : projects) {
 			if (project.isOpen()) {
 				try {
-					processProject(project);
+					processProject(project, unmark);
 				} catch (CoreException e) {
 				}
 			}
@@ -58,22 +68,28 @@ public class Action implements IWorkbenchWindowActionDelegate {
 
 	}
 
-	private void processProject(IProject project) throws CoreException {
+	private void processProject(IProject project, boolean unmark) throws CoreException {
 		for (DerivedResourceHandler derivedResourceHandler : handlers) {
 			derivedResourceHandler.initProject(project);
 		}
 		List<IResource> resources = Arrays.asList(project.members());
 		for (IResource resource : resources) {
-			processResource(resource);
+			processResource(resource, unmark);
 		}
 	}
 
-	private void processResource(IResource resource) throws CoreException {
+	private void processResource(IResource resource, boolean unmark) throws CoreException {
+		boolean derived = false;
 		for (DerivedResourceHandler derivedResourceHandler : handlers) {
 			if (derivedResourceHandler.isDerived(resource)) {
-				resource.setDerived(true, null);
+				derived = true;
 				break;
 			}
+		}
+		if (derived) {
+			resource.setDerived(true, null);
+		} else if (unmark) {
+			resource.setDerived(false, null);
 		}
 
 	}
@@ -92,7 +108,6 @@ public class Action implements IWorkbenchWindowActionDelegate {
 
 	@Override
 	public void init(IWorkbenchWindow window) {
-		// TODO Auto-generated method stub
-
+		parentShell = window.getShell();
 	}
 }
