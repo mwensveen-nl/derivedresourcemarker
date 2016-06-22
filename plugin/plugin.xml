@@ -9,7 +9,6 @@
             visible="true"
             id="nl.mwensveen.derivedresourcemarker.actionSet">
          <menu
-               icon="icons/icon16x16.png"
                id="nl.mwensveen.derivedresourcemarker.menu"
                label="Derived Resource Marker">
             <separator
