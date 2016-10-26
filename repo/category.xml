@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <description url="http://constantnameconveter.mwensveen.nl">
-      MWensveen.nl Constant name Converter: Eclipse Plugin
+   <description url="http://deriveresourcemarke.mwensveen.nl">
+      MWensveen.nl Derived Resource Marker: Eclipse Plugin
    </description>
    <feature url="features/nl.mwensveen.eclipse.plugins.drm-feature_2.0.0.jar" id="nl.mwensveen.eclipse.plugins.drm-feature" version="2.0.0">
       <category name="deriveresourcemarker.category"/>
