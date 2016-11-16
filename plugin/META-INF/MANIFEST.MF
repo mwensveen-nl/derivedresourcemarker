@@ -11,3 +11,4 @@ Require-Bundle: org.eclipse.ui;bundle-version="[3.108.0,3.109.0)",
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Import-Package: org.eclipse.core.resources
+Export-Package: nl.mwensveen.derivedresourcemarker.util

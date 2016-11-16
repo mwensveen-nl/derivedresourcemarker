@@ -16,7 +16,7 @@ public class FoldernameDerivedResourceHandler implements DerivedResourceHandler 
 
 	@Override
 	public boolean isDerived(IResource resource) {
-		return folderNames.contains(resource.getName());
+		return resource.getType() == IResource.FOLDER && folderNames.contains(resource.getName());
 	}
 
 	@Override

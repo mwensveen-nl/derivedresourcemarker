@@ -109,6 +109,7 @@
   </build>
   <modules>
     <module>plugin</module>
+    <module>test</module>
     <module>feature</module>
     <module>repo</module>
   </modules>

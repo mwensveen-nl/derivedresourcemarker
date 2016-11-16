@@ -8,6 +8,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.widgets.Shell;
@@ -31,6 +32,7 @@ public class Action implements IWorkbenchWindowActionDelegate {
 		handlers = new ArrayList<DerivedResourceHandler>();
 		handlers.add(new PomPackagingDerivedResourceHandler());
 		handlers.add(new FoldernameDerivedResourceHandler());
+		handlers.add(new FilenameDerivedResourceHandler());
 	}
 
 	/**
@@ -62,6 +64,7 @@ public class Action implements IWorkbenchWindowActionDelegate {
 				try {
 					processProject(project, unmark);
 				} catch (CoreException e) {
+					Platform.getLog(Platform.getBundle("nl.mwensveen.eclipse.plugins.drm-plugin")).log(e.getStatus());
 				}
 			}
 		}

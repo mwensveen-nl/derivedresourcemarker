@@ -30,6 +30,14 @@ public class PreferenceManager {
 		return names;
 	}
 
+	public static Names getDefaultPreferencesForFileNames() {
+		Names names = new Names();
+		names.add(".project");
+		names.add("*.classpath");
+
+		return names;
+	}
+
 	public static void savePreferencesForFolderNames(Names names) {
 		try {
 			IPreferenceStore store = Plugin.getDefault().getPreferenceStore();
@@ -47,6 +55,18 @@ public class PreferenceManager {
 			IPreferenceStore store = Plugin.getDefault().getPreferenceStore();
 			String namesString = serialize(names);
 			store.setValue(PreferenceConstants.POM_PACKAGING, namesString);
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public static void savePreferencesForFileNames(Names names) {
+		try {
+			IPreferenceStore store = Plugin.getDefault().getPreferenceStore();
+			String namesString = serialize(names);
+			store.setValue(PreferenceConstants.FILE_NAME, namesString);
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -78,6 +98,16 @@ public class PreferenceManager {
 		Names names = deserialize(value);
 		if (names == null) {
 			return getDefaultPreferencesForPomPackaging();
+		}
+		return names;
+	}
+
+	public static Names getPreferencesForFileName() {
+		IPreferenceStore store = Plugin.getDefault().getPreferenceStore();
+		String value = store.getString(PreferenceConstants.FILE_NAME);
+		Names names = deserialize(value);
+		if (names == null) {
+			return getDefaultPreferencesForFileNames();
 		}
 		return names;
 	}

@@ -33,12 +33,17 @@ public class DRMPreferencePage extends PreferencePage implements IWorkbenchPrefe
 
 	// The list that displays the current folderNames
 	private List folderNameList;
-	// The newEntryText is the text where new folderNames are specified
+	// The newFolderNameText is the text where new folderNames are specified
 	private Text newfolderNameText;
+
+	// The list that displays the current fileNames
+	private List fileNameList;
+	// The newfileNameText is the text where new folderNames are specified
+	private Text newFileNameText;
 
 	// The list that displays the current pomPackagings
 	private List pomPackagingList;
-	// The newEntryText is the text where new pomPackaging are specified
+	// The newPomPackagingText is the text where new pomPackaging are specified
 	private Text newPomPackagingText;
 	private GridData data_1;
 
@@ -166,6 +171,63 @@ public class DRMPreferencePage extends PreferencePage implements IWorkbenchPrefe
 		data = new GridData();
 		data.horizontalSpan = 2;
 		removeButton.setLayoutData(data);
+
+		////////////////////////////////////////////////////
+
+		label = new Label(entryTable, SWT.NONE);
+		label.setText("File Names");
+
+		fileNameList = new List(entryTable, SWT.BORDER + SWT.V_SCROLL);
+		fileNameList.setItems(getFileNamePrefs());
+
+		// Create a data that takes up the extra space in the dialog and spans
+		// both columns.
+		data_1 = new GridData(GridData.FILL_BOTH);
+		data_1.widthHint = 352;
+		fileNameList.setLayoutData(data_1);
+
+		buttonComposite = new Composite(entryTable, SWT.NULL);
+
+		buttonLayout = new GridLayout();
+		buttonLayout.numColumns = 2;
+		buttonComposite.setLayout(buttonLayout);
+
+		// Create a data that takes up the extra space in the dialog and spans
+		// both columns.
+		data = new GridData(GridData.FILL_BOTH | GridData.VERTICAL_ALIGN_BEGINNING);
+		buttonComposite.setLayoutData(data);
+
+		addButton = new Button(buttonComposite, SWT.PUSH | SWT.CENTER);
+
+		addButton.setText("Add to List"); //$NON-NLS-1$
+		addButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent event) {
+				fileNameList.add(newFileNameText.getText(), fileNameList.getItemCount());
+				newFileNameText.setText("");
+			}
+		});
+
+		newFileNameText = new Text(buttonComposite, SWT.BORDER);
+		// Create a data that takes up the extra space in the dialog .
+		data = new GridData(GridData.FILL_HORIZONTAL);
+		data.grabExcessHorizontalSpace = true;
+		newFileNameText.setLayoutData(data);
+
+		removeButton = new Button(buttonComposite, SWT.PUSH | SWT.CENTER);
+
+		removeButton.setText("Remove Selection"); //$NON-NLS-1$
+		removeButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent event) {
+				fileNameList.remove(fileNameList.getSelectionIndex());
+			}
+		});
+
+		data = new GridData();
+		data.horizontalSpan = 2;
+		removeButton.setLayoutData(data);
+
 		return entryTable;
 	}
 
@@ -188,6 +250,8 @@ public class DRMPreferencePage extends PreferencePage implements IWorkbenchPrefe
 		folderNameList.setItems(defaultPreferences.getNames().toArray(new String[0]));
 		defaultPreferences = PreferenceManager.getDefaultPreferencesForPomPackaging();
 		pomPackagingList.setItems(defaultPreferences.getNames().toArray(new String[0]));
+		defaultPreferences = PreferenceManager.getDefaultPreferencesForFileNames();
+		fileNameList.setItems(defaultPreferences.getNames().toArray(new String[0]));
 	}
 
 	/**
@@ -202,6 +266,9 @@ public class DRMPreferencePage extends PreferencePage implements IWorkbenchPrefe
 		names = new Names();
 		names.replace(pomPackagingList.getItems());
 		PreferenceManager.savePreferencesForPomPackaging(names);
+		names = new Names();
+		names.replace(fileNameList.getItems());
+		PreferenceManager.savePreferencesForFileNames(names);
 		return super.performOk();
 	}
 
@@ -213,5 +280,10 @@ public class DRMPreferencePage extends PreferencePage implements IWorkbenchPrefe
 	private String[] getPomPackagingPrefs() {
 		Names pomPackaging = PreferenceManager.getPreferencesForPomPackaging();
 		return pomPackaging.getNames().toArray(new String[0]);
+	}
+
+	private String[] getFileNamePrefs() {
+		Names folderNames = PreferenceManager.getPreferencesForFileName();
+		return folderNames.getNames().toArray(new String[0]);
 	}
 }
