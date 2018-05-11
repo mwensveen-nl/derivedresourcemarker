@@ -9,9 +9,9 @@
 
 -->
 <feature
-      id="nl.mwensveen.eclipse.plugins.drm_feature"
+      id="nl.mwensveen.eclipse.plugins.drm-feature"
       label="%featureName"
-      version="3.0.0"
+      version="4.0.0"
       provider-name="%providerName"
       plugin="nl.mwensveen.eclipse.plugins.drm-plugin">
 
@@ -27,7 +27,7 @@
          id="nl.mwensveen.eclipse.plugins.drm-plugin"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="4.0.0"
          unpack="false"/>
 
 </feature>

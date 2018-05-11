@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <description url="http://deriveresourcemarke.mwensveen.nl">
+   <description url="http://deriveresourcemarker.mwensveen.nl">
       MWensveen.nl Derived Resource Marker: Eclipse Plugin
    </description>
-   <feature url="features/nl.mwensveen.eclipse.plugins.drm-feature_3.0.0.jar" id="nl.mwensveen.eclipse.plugins.drm_feature" version="3.0.0">
-      <category name="deriveresourcemarker.category"/>
+   <feature url="features/drm-feature_4.0.0.jar" id="nl.mwensveen.eclipse.plugins.drm-feature" version="4.0.0">
+      <category name="MWensveen.nl deriveresourcemarker"/>
    </feature>
-   <category-def name="deriveresourcemarker.category" label="MWensveen.nl Derived Resource Marker"/>
+   <category-def name="MWensveen.nl deriveresourcemarker" >
+      <description>
+         Derived Resource Marker Category
+      </description>
+   </category-def>
 </site>
