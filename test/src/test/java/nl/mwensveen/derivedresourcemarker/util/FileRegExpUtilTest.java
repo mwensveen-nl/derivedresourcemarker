@@ -7,7 +7,7 @@ import org.junit.Test;
 public class FileRegExpUtilTest {
 
 	@Test
-	public void testStarRegExp() {
+	public void TESTSTARREGEXP() {
 		Assert.assertTrue(FileRegExpUtil.matches(".*\\.abc", "bla.abc"));
 	}
 
