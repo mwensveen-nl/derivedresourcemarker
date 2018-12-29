@@ -4,7 +4,7 @@
   <parent>
    <groupId>nl.mwensveen.derivedresourcemarker</groupId>
   <artifactId>nl.mwensveen.eclipse.plugins.drm-project</artifactId>
-  <version>4.1.0</version>
+  <version>4.2.0</version>
   </parent>
  
   <artifactId>nl.mwensveen.eclipse.plugins.drm-plugin</artifactId>
@@ -68,7 +68,6 @@
     </plugins>
   </build>
   <properties>
-    <tycho-version>0.24.0</tycho-version>
     <platform.version>[3.11,4.0)</platform.version>
   </properties>
 </project>
