@@ -7,8 +7,9 @@ Bundle-Activator: nl.mwensveen.derivedresourcemarker.plugin.Plugin
 Bundle-Vendor: MWensveen.nl
 Require-Bundle: org.eclipse.ui;bundle-version="[3.109.0,4.0)",
  org.eclipse.core.runtime;bundle-version="[3.14.0,4.0)",
- com.google.guava;bundle-version="[16.0.0,22.0.0)"
+ com.google.guava,javax.annotation
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Import-Package: org.eclipse.core.resources
 Export-Package: nl.mwensveen.derivedresourcemarker.util
+Automatic-Module-Name: nl.mwensveen.eclipse.plugins.drm-plugin

@@ -68,6 +68,6 @@
     </plugins>
   </build>
   <properties>
-    <platform.version>[3.11,4.0)</platform.version>
+    <platform.version>[3.11,5.0)</platform.version>
   </properties>
 </project>
