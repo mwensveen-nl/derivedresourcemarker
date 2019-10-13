@@ -1,4 +1,4 @@
-package nl.mwensveen.derivedresourcemarker.preferences;
+package nl.mwensveen.eclipse.drm.preferences;
 
 import java.io.Serializable;
 import java.util.ArrayList;

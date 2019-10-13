@@ -1,39 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-
-   <extension
-         point="org.eclipse.ui.actionSets">
-      <actionSet
-            label="Derived Resource Marker"
-            visible="true"
-            id="nl.mwensveen.derivedresourcemarker.actionSet">
-         <menu
-               id="nl.mwensveen.derivedresourcemarker.menu"
-               label="Derived Resource Marker">
-            <separator
-                  name="nl.mwensveen.derivedresourcemarker.seperator">
-            </separator>
-         </menu>
-         <action
-               label="Derived Resource Marker"
-               icon="icons/icon16x16.png"
-               class="nl.mwensveen.derivedresourcemarker.action.Action"
-               tooltip="Mark resources in all projects as derived"
-               menubarPath="nl.mwensveen.derivedresourcemarker.menu/nl.mwensveen.derivedresourcemarker.group"
-               toolbarPath="nl.mwensveen.derivedresourcemarker.group"
-               id="nl.mwensveen.derivedresourcemarker.action">
-         </action>
-      </actionSet>
-   </extension>
-   <extension
-         point="org.eclipse.ui.preferencePages">
-      <page
-            class="nl.mwensveen.derivedresourcemarker.preferences.DRMPreferencePage"
-            id="nl.mwensveen.derivedresourcemarker.preferencepage"
-            name="Derived Resource Marker Preferences">
-      </page>
-   </extension>
-
-
+  <!-- menu / toolbar -->
+  <extension point="org.eclipse.ui.commands">
+    <category description="Add the DRM option to Menu and Toolbar" id="nl.mwensveen.eclipse.drm.commands.menutoolbar.category" name="DRM MenuToolbar Category"/>
+    <command categoryId="nl.mwensveen.eclipse.drm.commands.menutoolbar.category" name="DRM MenuToolbar Command" id="nl.mwensveen.eclipse.drm.commands.menutoolbar.command"/>
+  </extension>
+  <extension point="org.eclipse.ui.handlers">
+    <handler class="nl.mwensveen.eclipse.drm.menutoolbar.handlers.DRMMenuToolbarHandler" commandId="nl.mwensveen.eclipse.drm.commands.menutoolbar.command"/>
+  </extension>
+  <extension point="org.eclipse.ui.menus">
+    <menuContribution locationURI="menu:org.eclipse.ui.main.menu?after=additions">
+      <menu commandId="nl.mwensveen.eclipse.drm.commands.menutoolbar.command" id="nl.mwensveen.eclipse.drm.menus.menutoolbar.drmmenu" label="DRM" mnemonic="D">
+        <command commandId="nl.mwensveen.eclipse.drm.commands.menutoolbar.command" id="nl.mwensveen.eclipse.drm.menus.menutoolbar.drmcommand" label="Derived Resource Marker" mnemonic="D" tooltip="Mark Resources in Workspace as Derived"/>
+      </menu>
+    </menuContribution>
+    <menuContribution locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
+      <toolbar id="nl.mwensveen.eclipse.drm.toolbars.menutoolbar.drmmenu" label="DRM">
+        <command commandId="nl.mwensveen.eclipse.drm.commands.menutoolbar.command" icon="icons/icon16x16.png" id="nl.mwensveen.eclipse.drm.toolbars.menutoolbar.drmcommand" tooltip="Derived Resource Marker"/>
+      </toolbar>
+    </menuContribution>
+  </extension>
+  <!-- context menu  -->
+  <extension point="org.eclipse.ui.commands">
+    <category description="Add DRM option to the context / popup menu" id="nl.mwensveen.eclipse.drm.commands.context.category" name="DRM Context Category"/>
+    <command categoryId="nl.mwensveen.eclipse.drm.commands.context.category" id="nl.mwensveen.eclipse.drm.commands.context.command" name="DRM Context Command"/>
+  </extension>
+  <extension point="org.eclipse.ui.handlers">
+    <handler class="nl.mwensveen.eclipse.drm.context.handlers.DRMContextHandler" commandId="nl.mwensveen.eclipse.drm.commands.context.command"/>
+  </extension>
+  <extension point="org.eclipse.ui.menus">
+    <menuContribution locationURI="popup:org.eclipse.jdt.ui.PackageExplorer?after=group.properties">
+      <command
+            commandId="nl.mwensveen.eclipse.drm.commands.context.command"
+            icon="icons/icon16x16.png"
+            id="nl.mwensveen.eclipse.drm.menus.context.packageexplorer.command"
+            label="Mark as Derived"
+            mnemonic="D">
+        <visibleWhen checkEnabled="false">
+          <with variable="selection">
+            <or>
+              <iterate ifEmpty="false">
+                <adapt type="org.eclipse.ui.IWorkingSet"/>
+              </iterate>
+              <iterate ifEmpty="false">
+                <adapt type="org.eclipse.core.resources.IResource"/>
+              </iterate>
+            </or>
+          </with>
+        </visibleWhen>
+      </command>
+    </menuContribution>
+  </extension>
+  <extension point="org.eclipse.ui.menus">
+    <menuContribution locationURI="popup:org.eclipse.ui.navigator.ProjectExplorer#PopupMenu?after=group.properties">
+      <command
+            commandId="nl.mwensveen.eclipse.drm.commands.context.command"
+            icon="icons/icon16x16.png"
+            id="nl.mwensveen.eclipse.drm.menus.context.packageexplorer.command"
+            label="Mark as Derived"
+            mnemonic="D">
+        <visibleWhen checkEnabled="false">
+          <with variable="selection">
+            <or>
+              <iterate ifEmpty="false">
+                <adapt type="org.eclipse.ui.IWorkingSet"/>
+              </iterate>
+              <iterate ifEmpty="false">
+                <adapt type="org.eclipse.core.resources.IResource"/>
+              </iterate>
+            </or>
+          </with>
+        </visibleWhen>
+      </command>
+    </menuContribution>
+  </extension>
+  <!-- Preferences -->
+  <extension point="org.eclipse.ui.preferencePages">
+    <page class="nl.mwensveen.eclipse.drm.preferences.DRMPreferencePage" id="nl.mwensveen.eclipse.drm.preferences.page" name="Derived Resource Marker Preferences"/>
+  </extension>
 </plugin>

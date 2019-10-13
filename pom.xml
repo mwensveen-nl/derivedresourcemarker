@@ -7,7 +7,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>nl.mwensveen.derivedresourcemarker</groupId>
   <artifactId>nl.mwensveen.eclipse.plugins.drm-project</artifactId>
-  <version>4.2.0</version>
+  <version>5.0.0</version>
   <packaging>pom</packaging>
   
   <name>Derived Resource Marker - Project</name>
