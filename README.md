@@ -3,7 +3,7 @@
 
 This is an Eclipse plugin that can help to mark resources in a workspace as derived. 
 
-**Derived resources are excluded in searches. **
+**Derived resources are excluded in searches.**
 
 You can use this plugin in two ways:
 
@@ -15,3 +15,4 @@ The plugin can use the pom packaging of a maven module to determine if the resou
 ## Installation
 The plugin can be installed in Eclipse by using the update site.
 Which can be found [here](http://mwensveen-nl.github.io/derivedresourcemarker/)
+ 
