@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Derived Resource Marker Plugin
 Bundle-SymbolicName: nl.mwensveen.eclipse.plugins.drm-plugin;singleton:=true
-Bundle-Version: 5.0.0
+Bundle-Version: 5.0.1
 Bundle-Vendor: MWensveen.nl
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,

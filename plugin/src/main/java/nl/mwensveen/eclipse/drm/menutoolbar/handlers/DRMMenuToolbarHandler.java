@@ -16,7 +16,6 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
 
@@ -55,7 +54,6 @@ public class DRMMenuToolbarHandler extends AbstractHandler {
 
     private void processProject(IProject project, boolean unmark) {
         // initalize the inspectors for this project.
-        MessageDialog.openInformation(HandlerUtil.getActiveShell(event), "processProject", project.getName());
         inspectors.stream().forEach(dri -> dri.initProject(project));
         try {
             Arrays.stream(project.members()).forEach(r -> processResource(r, unmark));
@@ -67,7 +65,6 @@ public class DRMMenuToolbarHandler extends AbstractHandler {
     private void processResource(IResource resource, boolean unmark) {
         try {
             boolean derived = inspectors.stream().filter(dri -> dri.isDerived(resource)).findFirst().isPresent();
-            MessageDialog.openInformation(HandlerUtil.getActiveShell(event), "processResource", resource.getName() + " " + derived);
             if (derived) {
                 resource.setDerived(true, null);
             } else if (unmark) {
