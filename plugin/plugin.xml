@@ -12,12 +12,18 @@
   <extension point="org.eclipse.ui.menus">
     <menuContribution locationURI="menu:org.eclipse.ui.main.menu?after=additions">
       <menu commandId="nl.mwensveen.eclipse.drm.commands.menutoolbar.command" id="nl.mwensveen.eclipse.drm.menus.menutoolbar.drmmenu" label="DRM" mnemonic="D">
-        <command commandId="nl.mwensveen.eclipse.drm.commands.menutoolbar.command" id="nl.mwensveen.eclipse.drm.menus.menutoolbar.drmcommand" label="Derived Resource Marker" mnemonic="D" tooltip="Mark Resources in Workspace as Derived"/>
+        <command
+              commandId="nl.mwensveen.eclipse.drm.commands.menutoolbar.command"
+              icon="icons/folder-yellow-development-icon-24.png"
+              id="nl.mwensveen.eclipse.drm.menus.menutoolbar.drmcommand"
+              label="Derived Resource Marker"
+              mnemonic="D"
+              tooltip="Mark Resources in Workspace as Derived"/>
       </menu>
     </menuContribution>
     <menuContribution locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
       <toolbar id="nl.mwensveen.eclipse.drm.toolbars.menutoolbar.drmmenu" label="DRM">
-        <command commandId="nl.mwensveen.eclipse.drm.commands.menutoolbar.command" icon="icons/icon16x16.png" id="nl.mwensveen.eclipse.drm.toolbars.menutoolbar.drmcommand" tooltip="Derived Resource Marker"/>
+        <command commandId="nl.mwensveen.eclipse.drm.commands.menutoolbar.command" icon="icons/folder-yellow-development-icon-16.png" id="nl.mwensveen.eclipse.drm.toolbars.menutoolbar.drmcommand" tooltip="Derived Resource Marker"/>
       </toolbar>
     </menuContribution>
   </extension>
@@ -25,15 +31,21 @@
   <extension point="org.eclipse.ui.commands">
     <category description="Add DRM option to the context / popup menu" id="nl.mwensveen.eclipse.drm.commands.context.category" name="DRM Context Category"/>
     <command categoryId="nl.mwensveen.eclipse.drm.commands.context.category" id="nl.mwensveen.eclipse.drm.commands.context.command" name="DRM Context Command"/>
+    <command categoryId="nl.mwensveen.eclipse.drm.commands.context.category" id="nl.mwensveen.eclipse.drm.commands.context.command2" name="DRM Context Command 2"/>
   </extension>
   <extension point="org.eclipse.ui.handlers">
-    <handler class="nl.mwensveen.eclipse.drm.context.handlers.DRMContextHandler" commandId="nl.mwensveen.eclipse.drm.commands.context.command"/>
+    <handler class="nl.mwensveen.eclipse.drm.context.handlers.DRMMarkContextHandler" commandId="nl.mwensveen.eclipse.drm.commands.context.command"/>
+    <handler
+          class="nl.mwensveen.eclipse.drm.context.handlers.DRMUnmarkContextHandler"
+          commandId="nl.mwensveen.eclipse.drm.commands.context.command2"
+          helpContextId="remove derive mark"/>
   </extension>
   <extension point="org.eclipse.ui.menus">
     <menuContribution locationURI="popup:org.eclipse.jdt.ui.PackageExplorer?after=group.properties">
+     <menu label="DRM" icon="icons/folder-yellow-development-icon-16.png" mnemonic="D">
       <command
             commandId="nl.mwensveen.eclipse.drm.commands.context.command"
-            icon="icons/icon16x16.png"
+            icon="icons/folder-yellow-locked-icon-24.png"
             id="nl.mwensveen.eclipse.drm.menus.context.packageexplorer.command"
             label="Mark as Derived"
             mnemonic="D">
@@ -50,13 +62,34 @@
           </with>
         </visibleWhen>
       </command>
+      <command
+            commandId="nl.mwensveen.eclipse.drm.commands.context.command2"
+            icon="icons/folder-yellow-unlocked-icon-24.png"
+            id="nl.mwensveen.eclipse.drm.menus.context.packageexplorer.command"
+            label="Mark as Non Derived"
+            mnemonic="N">
+        <visibleWhen checkEnabled="false">
+          <with variable="selection">
+            <or>
+              <iterate ifEmpty="false">
+                <adapt type="org.eclipse.ui.IWorkingSet"/>
+              </iterate>
+              <iterate ifEmpty="false">
+                <adapt type="org.eclipse.core.resources.IResource"/>
+              </iterate>
+            </or>
+          </with>
+        </visibleWhen>
+      </command>
+     </menu>
     </menuContribution>
   </extension>
   <extension point="org.eclipse.ui.menus">
     <menuContribution locationURI="popup:org.eclipse.ui.navigator.ProjectExplorer#PopupMenu?after=group.properties">
+     <menu label="DRM" icon="icons/folder-yellow-development-icon-16.png" mnemonic="D">
       <command
             commandId="nl.mwensveen.eclipse.drm.commands.context.command"
-            icon="icons/icon16x16.png"
+            icon="icons/folder-yellow-locked-icon-24.png"
             id="nl.mwensveen.eclipse.drm.menus.context.packageexplorer.command"
             label="Mark as Derived"
             mnemonic="D">
@@ -73,6 +106,26 @@
           </with>
         </visibleWhen>
       </command>
+      <command
+            commandId="nl.mwensveen.eclipse.drm.commands.context.command2"
+            icon="icons/folder-yellow-unlocked-icon-24.png"
+            id="nl.mwensveen.eclipse.drm.menus.context.packageexplorer.command2"
+            label="Mark as Non Derived"
+            mnemonic="N">
+        <visibleWhen checkEnabled="true">
+          <with variable="selection">
+            <or>
+              <iterate ifEmpty="false">
+                <adapt type="org.eclipse.ui.IWorkingSet"/>
+              </iterate>
+              <iterate ifEmpty="false">
+                <adapt type="org.eclipse.core.resources.IResource"/>
+              </iterate>
+            </or>
+          </with>
+        </visibleWhen>
+      </command>
+     </menu>
     </menuContribution>
   </extension>
   <!-- Preferences -->

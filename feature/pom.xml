@@ -4,7 +4,7 @@
 	<parent>
        <groupId>nl.mwensveen.derivedresourcemarker</groupId>
        <artifactId>nl.mwensveen.eclipse.plugins.drm-project</artifactId>
-       <version>5.0.1</version>
+       <version>5.1.0</version>
 	</parent>
 	<artifactId>nl.mwensveen.eclipse.plugins.drm-feature</artifactId>
 	<name>Derived Resource Marker - Feature</name>

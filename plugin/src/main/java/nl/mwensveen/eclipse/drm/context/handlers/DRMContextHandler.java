@@ -20,12 +20,17 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkingSet;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-// TODO: Auto-generated Javadoc
 /**
  * The DRMContextHandler is the IHandler that is used by the eclipse plugin when the DRM option from the contect menu is selected.
- * It will mark all selected resources as derived.
+ * It will mark all selected resources as derived or underived, based on the field <code>mark</code>
  */
-public class DRMContextHandler extends AbstractHandler implements IHandler {
+public abstract class DRMContextHandler extends AbstractHandler implements IHandler {
+
+    private final boolean mark;
+
+    public DRMContextHandler(boolean mark) {
+        this.mark = mark;
+    }
 
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
@@ -103,7 +108,7 @@ public class DRMContextHandler extends AbstractHandler implements IHandler {
      */
     private void processResource(IResource resource) {
         try {
-            resource.setDerived(true, null);
+            resource.setDerived(mark, null);
         } catch (CoreException e) {
             Platform.getLog(Platform.getBundle("nl.mwensveen.eclipse.drm.")).log(e.getStatus());
         }
