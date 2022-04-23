@@ -47,6 +47,8 @@ public class DRMPreferencePage extends PreferencePage implements IWorkbenchPrefe
     // The newPomPackagingText is the text where new pomPackaging are specified
     private Text newPomPackagingText;
     private GridData data_1;
+    private Button debugSwitch;
+    private Button nestedProjectFolderSwitch;
 
     /*
      * @see PreferencePage#createContents(Composite)
@@ -64,117 +66,40 @@ public class DRMPreferencePage extends PreferencePage implements IWorkbenchPrefe
         GridLayout layout = new GridLayout();
         entryTable.setLayout(layout);
 
-        Label label = new Label(entryTable, SWT.NONE);
-        label.setText("Folder Names");
+        addFolderNamesPreferences(entryTable);
 
-        folderNameList = new List(entryTable, SWT.BORDER + SWT.V_SCROLL);
-        folderNameList.setItems(getFolderNamePrefs());
+        addPomPackaging(entryTable);
 
-        // Create a data that takes up the extra space in the dialog and spans
-        // both columns.
-        data_1 = new GridData(GridData.FILL_BOTH);
-        data_1.widthHint = 352;
-        folderNameList.setLayoutData(data_1);
+        addFileNames(entryTable);
 
-        Composite buttonComposite = new Composite(entryTable, SWT.NULL);
+        addNestedProjectFolders(entryTable);
 
-        GridLayout buttonLayout = new GridLayout();
-        buttonLayout.numColumns = 2;
-        buttonComposite.setLayout(buttonLayout);
+        addDebug(entryTable);
 
-        // Create a data that takes up the extra space in the dialog and spans
-        // both columns.
-        data = new GridData(GridData.FILL_BOTH | GridData.VERTICAL_ALIGN_BEGINNING);
-        buttonComposite.setLayoutData(data);
+        return entryTable;
+    }
 
-        Button addButton = new Button(buttonComposite, SWT.PUSH | SWT.CENTER);
+    private void addNestedProjectFolders(Composite entryTable) {
+        nestedProjectFolderSwitch = new Button(entryTable, SWT.CHECK);
+        nestedProjectFolderSwitch.setSelection(PreferenceManager.getPreferencesForNestedProjectFolders());
+        nestedProjectFolderSwitch.setText("Nested Project Folders");
+        nestedProjectFolderSwitch.setEnabled(true);
+    }
 
-        addButton.setText("Add to List"); //$NON-NLS-1$
-        addButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent event) {
-                folderNameList.add(newfolderNameText.getText(), folderNameList.getItemCount());
-                newfolderNameText.setText("");
-            }
-        });
+    private void addDebug(Composite entryTable) {
+        debugSwitch = new Button(entryTable, SWT.CHECK);
+        debugSwitch.setSelection(PreferenceManager.getPreferencesForDebug());
+        debugSwitch.setText("Debug");
+        debugSwitch.setEnabled(true);
+    }
 
-        newfolderNameText = new Text(buttonComposite, SWT.BORDER);
-        // Create a data that takes up the extra space in the dialog .
-        data = new GridData(GridData.FILL_HORIZONTAL);
-        data.grabExcessHorizontalSpace = true;
-        newfolderNameText.setLayoutData(data);
-
-        Button removeButton = new Button(buttonComposite, SWT.PUSH | SWT.CENTER);
-
-        removeButton.setText("Remove Selection"); //$NON-NLS-1$
-        removeButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent event) {
-                folderNameList.remove(folderNameList.getSelectionIndex());
-            }
-        });
-
-        data = new GridData();
-        data.horizontalSpan = 2;
-        removeButton.setLayoutData(data);
-
-        /////////////////////////////////////////
-        label = new Label(entryTable, SWT.NONE);
-        label.setText("Pom Packaging");
-
-        pomPackagingList = new List(entryTable, SWT.BORDER + SWT.V_SCROLL);
-        pomPackagingList.setItems(getPomPackagingPrefs());
-
-        // Create a data that takes up the extra space in the dialog and spans
-        // both columns.
-        data = new GridData(GridData.FILL_BOTH);
-        pomPackagingList.setLayoutData(data);
-
-        buttonComposite = new Composite(entryTable, SWT.NULL);
-
-        buttonLayout = new GridLayout();
-        buttonLayout.numColumns = 2;
-        buttonComposite.setLayout(buttonLayout);
-
-        // Create a data that takes up the extra space in the dialog and spans
-        // both columns.
-        data = new GridData(GridData.FILL_BOTH | GridData.VERTICAL_ALIGN_BEGINNING);
-        buttonComposite.setLayoutData(data);
-
-        addButton = new Button(buttonComposite, SWT.PUSH | SWT.CENTER);
-
-        addButton.setText("Add to List"); //$NON-NLS-1$
-        addButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent event) {
-                pomPackagingList.add(newPomPackagingText.getText(), pomPackagingList.getItemCount());
-                newPomPackagingText.setText("");
-                ;
-            }
-        });
-
-        newPomPackagingText = new Text(buttonComposite, SWT.BORDER);
-        // Create a data that takes up the extra space in the dialog .
-        data = new GridData(GridData.FILL_HORIZONTAL);
-        data.grabExcessHorizontalSpace = true;
-        newPomPackagingText.setLayoutData(data);
-
-        removeButton = new Button(buttonComposite, SWT.PUSH | SWT.CENTER);
-
-        removeButton.setText("Remove Selection"); //$NON-NLS-1$
-        removeButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent event) {
-                pomPackagingList.remove(pomPackagingList.getSelectionIndex());
-            }
-        });
-
-        data = new GridData();
-        data.horizontalSpan = 2;
-        removeButton.setLayoutData(data);
-
-        ////////////////////////////////////////////////////
-
+    private void addFileNames(Composite entryTable) {
+        GridData data;
+        Label label;
+        Composite buttonComposite;
+        GridLayout buttonLayout;
+        Button addButton;
+        Button removeButton;
         label = new Label(entryTable, SWT.NONE);
         label.setText("File Names");
 
@@ -228,8 +153,125 @@ public class DRMPreferencePage extends PreferencePage implements IWorkbenchPrefe
         data = new GridData();
         data.horizontalSpan = 2;
         removeButton.setLayoutData(data);
+    }
 
-        return entryTable;
+    private void addPomPackaging(Composite entryTable) {
+        GridData data;
+        Label label;
+        Composite buttonComposite;
+        GridLayout buttonLayout;
+        Button addButton;
+        Button removeButton;
+        label = new Label(entryTable, SWT.NONE);
+        label.setText("Pom Packaging");
+
+        pomPackagingList = new List(entryTable, SWT.BORDER + SWT.V_SCROLL);
+        pomPackagingList.setItems(getPomPackagingPrefs());
+
+        // Create a data that takes up the extra space in the dialog and spans
+        // both columns.
+        data = new GridData(GridData.FILL_BOTH);
+        pomPackagingList.setLayoutData(data);
+
+        buttonComposite = new Composite(entryTable, SWT.NULL);
+
+        buttonLayout = new GridLayout();
+        buttonLayout.numColumns = 2;
+        buttonComposite.setLayout(buttonLayout);
+
+        // Create a data that takes up the extra space in the dialog and spans
+        // both columns.
+        data = new GridData(GridData.FILL_BOTH | GridData.VERTICAL_ALIGN_BEGINNING);
+        buttonComposite.setLayoutData(data);
+
+        addButton = new Button(buttonComposite, SWT.PUSH | SWT.CENTER);
+
+        addButton.setText("Add to List"); //$NON-NLS-1$
+        addButton.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent event) {
+                pomPackagingList.add(newPomPackagingText.getText(), pomPackagingList.getItemCount());
+                newPomPackagingText.setText("");
+                ;
+            }
+        });
+
+        newPomPackagingText = new Text(buttonComposite, SWT.BORDER);
+        // Create a data that takes up the extra space in the dialog .
+        data = new GridData(GridData.FILL_HORIZONTAL);
+        data.grabExcessHorizontalSpace = true;
+        newPomPackagingText.setLayoutData(data);
+
+        removeButton = new Button(buttonComposite, SWT.PUSH | SWT.CENTER);
+
+        removeButton.setText("Remove Selection"); //$NON-NLS-1$
+        removeButton.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent event) {
+                pomPackagingList.remove(pomPackagingList.getSelectionIndex());
+            }
+        });
+
+        data = new GridData();
+        data.horizontalSpan = 2;
+        removeButton.setLayoutData(data);
+    }
+
+    private void addFolderNamesPreferences(Composite entryTable) {
+        GridData data;
+        Label label = new Label(entryTable, SWT.NONE);
+        label.setText("Folder Names");
+
+        folderNameList = new List(entryTable, SWT.BORDER + SWT.V_SCROLL);
+        folderNameList.setItems(getFolderNamePrefs());
+
+        // Create a data that takes up the extra space in the dialog and spans
+        // both columns.
+        data_1 = new GridData(GridData.FILL_BOTH);
+        data_1.widthHint = 352;
+        folderNameList.setLayoutData(data_1);
+
+        Composite buttonComposite = new Composite(entryTable, SWT.NULL);
+
+        GridLayout buttonLayout = new GridLayout();
+        buttonLayout.numColumns = 2;
+        buttonComposite.setLayout(buttonLayout);
+
+        // Create a data that takes up the extra space in the dialog and spans
+        // both columns.
+        data = new GridData(GridData.FILL_BOTH | GridData.VERTICAL_ALIGN_BEGINNING);
+        buttonComposite.setLayoutData(data);
+
+        Button addButton = new Button(buttonComposite, SWT.PUSH | SWT.CENTER);
+
+        addButton.setText("Add to List"); //$NON-NLS-1$
+        addButton.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent event) {
+                folderNameList.add(newfolderNameText.getText(), folderNameList.getItemCount());
+                newfolderNameText.setText("");
+            }
+        });
+
+        newfolderNameText = new Text(buttonComposite, SWT.BORDER);
+        // Create a data that takes up the extra space in the dialog .
+        data = new GridData(GridData.FILL_HORIZONTAL);
+        data.grabExcessHorizontalSpace = true;
+        newfolderNameText.setLayoutData(data);
+
+        Button removeButton = new Button(buttonComposite, SWT.PUSH | SWT.CENTER);
+
+        removeButton.setText("Remove Selection"); //$NON-NLS-1$
+        removeButton.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent event) {
+                folderNameList.remove(folderNameList.getSelectionIndex());
+            }
+        });
+
+        data = new GridData();
+        data.horizontalSpan = 2;
+        removeButton.setLayoutData(data);
     }
 
     /*
@@ -252,11 +294,12 @@ public class DRMPreferencePage extends PreferencePage implements IWorkbenchPrefe
         pomPackagingList.setItems(defaultPreferences.getNames().toArray(new String[0]));
         defaultPreferences = PreferenceManager.getDefaultPreferencesForFileNames();
         fileNameList.setItems(defaultPreferences.getNames().toArray(new String[0]));
+        nestedProjectFolderSwitch.setSelection(PreferenceManager.getDefaultPreferencesForNestedProjectFolders());
+        debugSwitch.setSelection(PreferenceManager.getDefaultPreferencesForDebug());
     }
 
     /**
-     * Method declared on IPreferencePage. Save the author name to the
-     * preference store.
+     * Method declared on IPreferencePage.
      */
     @Override
     public boolean performOk() {
@@ -269,6 +312,8 @@ public class DRMPreferencePage extends PreferencePage implements IWorkbenchPrefe
         names = new Names();
         names.replace(fileNameList.getItems());
         PreferenceManager.savePreferencesForFileNames(names);
+        PreferenceManager.savePreferencesNestedProjectFolder(nestedProjectFolderSwitch.getSelection());
+        PreferenceManager.savePreferencesDebug(debugSwitch.getSelection());
         return super.performOk();
     }
 
