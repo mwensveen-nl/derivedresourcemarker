@@ -3,7 +3,7 @@
    <description url="http://deriveresourcemarker.mwensveen.nl">
       MWensveen.nl Derived Resource Marker: Eclipse Plugin
    </description>
-   <feature url="features/drm-feature_5.2.0.jar" id="nl.mwensveen.eclipse.plugins.drm" version="5.2.0">
+   <feature url="features/drm-feature_6.0.0.jar" id="nl.mwensveen.eclipse.plugins.drm" version="6.0.0">
       <category name="MWensveen.nl deriveresourcemarker"/>
    </feature>
    <category-def name="MWensveen.nl deriveresourcemarker" >
