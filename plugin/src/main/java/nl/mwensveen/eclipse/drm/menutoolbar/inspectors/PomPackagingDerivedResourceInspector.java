@@ -24,25 +24,31 @@ public class PomPackagingDerivedResourceInspector implements DerivedResourceInsp
 
     private boolean isDerivedPomPackage;
     private Names derivedPomPackagingNames;
+    private boolean pomPackagingSwitch;
 
     @Override
     public void initProject(IProject project) {
-        isDerivedPomPackage = false;
-        IFile pomFile = null;
-        if (project.exists(new Path("/pom.xml"))) {
-            pomFile = project.getFile("/pom.xml");
-            try {
-                String packaging = getPomPackaging(pomFile);
-                isDerivedPomPackage = derivedPomPackagingNames.contains(packaging);
-            } catch (Exception e) {
-                System.out.println(e);
+        if (pomPackagingSwitch) {
+            isDerivedPomPackage = false;
+            IFile pomFile = null;
+            if (project.exists(new Path("/pom.xml"))) {
+                pomFile = project.getFile("/pom.xml");
+                try {
+                    String packaging = getPomPackaging(pomFile);
+                    isDerivedPomPackage = derivedPomPackagingNames.contains(packaging);
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
             }
         }
     }
 
     @Override
     public boolean isDerived(IResource resource) {
-        return isDerivedPomPackage && !"pom.xml".equals(resource.getName());
+        if (pomPackagingSwitch) {
+            return isDerivedPomPackage && !"pom.xml".equals(resource.getName());
+        }
+        return false;
     }
 
     private String getPomPackaging(IFile pomFile) {
@@ -61,11 +67,11 @@ public class PomPackagingDerivedResourceInspector implements DerivedResourceInsp
 
             NodeList elements = docElement.getElementsByTagName("packaging");
             if (elements != null) {
-                for (int i = 0; i < elements.getLength() && "".equals(packaging); i++) {
+                for (int i = 0; (i < elements.getLength()) && "".equals(packaging); i++) {
                     Node element = elements.item(i);
                     Node child = element.getFirstChild();
                     String value = child.getTextContent();
-                    if (value != null && value.trim().length() > 0) {
+                    if ((value != null) && (value.trim().length() > 0)) {
                         packaging = value;
                     }
                 }
@@ -81,6 +87,9 @@ public class PomPackagingDerivedResourceInspector implements DerivedResourceInsp
 
     @Override
     public void init() {
-        derivedPomPackagingNames = PreferenceManager.getPreferencesForPomPackaging();
+        pomPackagingSwitch = PreferenceManager.getPreferencesForPomPackagingSwitch();
+        if (pomPackagingSwitch) {
+            derivedPomPackagingNames = PreferenceManager.getPreferencesForPomPackaging();
+        }
     }
 }

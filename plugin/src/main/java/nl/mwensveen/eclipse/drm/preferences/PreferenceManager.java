@@ -54,6 +54,30 @@ public class PreferenceManager {
         }
     }
 
+    public static void savePreferencesForFolderNameSwitch(boolean b) {
+        try {
+            save(b, DRMPreferenceConstants.FOLDER_NAME_SWITCH);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void savePreferencesForFileNameSwitch(boolean b) {
+        try {
+            save(b, DRMPreferenceConstants.FILE_NAME_SWITCH);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void savePreferencesForPomPackagingSwitch(boolean b) {
+        try {
+            save(b, DRMPreferenceConstants.POM_PACKAGING_SWITCH);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private static void save(Names names, String preferenceName) throws IOException {
         String namesString = serialize(names);
         IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, PREFERENCE_STORE_QUALIFIER);
@@ -139,6 +163,14 @@ public class PreferenceManager {
         return readBoolean(DRMPreferenceConstants.DEBUG).orElse(getDefaultPreferencesForDebug());
     }
 
+    public static Boolean getPreferencesForFolderNameSwitch() {
+        return readBoolean(DRMPreferenceConstants.FOLDER_NAME_SWITCH).orElse(getDefaultPreferencesForFolderNameSwitch());
+    }
+
+    public static Boolean getDefaultPreferencesForFolderNameSwitch() {
+        return Boolean.TRUE;
+    }
+
     public static boolean getPreferencesForNestedProjectFolders() {
         return readBoolean(DRMPreferenceConstants.NESTED_PROJECT_FOLDERS).orElse(getDefaultPreferencesForNestedProjectFolders());
     }
@@ -158,4 +190,21 @@ public class PreferenceManager {
     public static Boolean getDefaultPreferencesForNestedProjectFolders() {
         return Boolean.TRUE;
     }
+
+    public static boolean getPreferencesForPomPackagingSwitch() {
+        return readBoolean(DRMPreferenceConstants.POM_PACKAGING_SWITCH).orElse(getDefaultPreferencesForPomPackagingSwitch());
+    }
+
+    public static Boolean getDefaultPreferencesForPomPackagingSwitch() {
+        return Boolean.TRUE;
+    }
+
+    public static boolean getPreferencesForFileNameSwitch() {
+        return readBoolean(DRMPreferenceConstants.FILE_NAME_SWITCH).orElse(getDefaultPreferencesForFileNameSwitch());
+    }
+
+    public static Boolean getDefaultPreferencesForFileNameSwitch() {
+        return Boolean.TRUE;
+    }
+
 }

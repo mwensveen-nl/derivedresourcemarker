@@ -9,6 +9,7 @@ import org.eclipse.core.resources.IResource;
 public class FilenameDerivedResourceInspector implements DerivedResourceInspector {
 
     private Names derivedFileNames;
+    private Boolean fileNameSwitch;
 
     @Override
     public void initProject(IProject project) {
@@ -17,16 +18,21 @@ public class FilenameDerivedResourceInspector implements DerivedResourceInspecto
 
     @Override
     public boolean isDerived(IResource resource) {
-        String fileName = resource.getName();
-        if (resource.getType() == IResource.FILE) {
-            return derivedFileNames.getNames().stream().filter(dfn -> FileRegExpUtil.matchesWildCard(dfn, fileName)).findAny().isPresent();
+        if (fileNameSwitch) {
+            String fileName = resource.getName();
+            if (resource.getType() == IResource.FILE) {
+                return derivedFileNames.getNames().stream().filter(dfn -> FileRegExpUtil.matchesWildCard(dfn, fileName)).findAny().isPresent();
+            }
         }
         return false;
     }
 
     @Override
     public void init() {
-        derivedFileNames = PreferenceManager.getPreferencesForFileName();
+        fileNameSwitch = PreferenceManager.getPreferencesForFileNameSwitch();
+        if (fileNameSwitch) {
+            derivedFileNames = PreferenceManager.getPreferencesForFileName();
+        }
     }
 
 }

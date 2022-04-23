@@ -7,6 +7,7 @@ import org.eclipse.core.resources.IResource;
 
 public class FoldernameDerivedResourceInspector implements DerivedResourceInspector {
 
+    private Boolean folderNameSwitch;
     private Names derivedFolderNames;
 
     @Override
@@ -16,12 +17,18 @@ public class FoldernameDerivedResourceInspector implements DerivedResourceInspec
 
     @Override
     public boolean isDerived(IResource resource) {
-        return resource.getType() == IResource.FOLDER && derivedFolderNames.contains(resource.getName());
+        if (folderNameSwitch) {
+            return (resource.getType() == IResource.FOLDER) && derivedFolderNames.contains(resource.getName());
+        }
+        return false;
     }
 
     @Override
     public void init() {
-        derivedFolderNames = PreferenceManager.getPreferencesForFolderName();
+        folderNameSwitch = PreferenceManager.getPreferencesForFolderNameSwitch();
+        if (folderNameSwitch) {
+            derivedFolderNames = PreferenceManager.getPreferencesForFolderName();
+        }
     }
 
 }

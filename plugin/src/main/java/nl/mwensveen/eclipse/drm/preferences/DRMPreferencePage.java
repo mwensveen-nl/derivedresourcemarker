@@ -10,7 +10,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
@@ -34,6 +33,8 @@ public class DRMPreferencePage extends PreferencePage implements IWorkbenchPrefe
 
     // The list that displays the current folderNames
     private List folderNameList;
+    private Button folderNameListSwitch;
+
     // The newFolderNameText is the text where new folderNames are specified
     private Text newfolderNameText;
 
@@ -44,11 +45,14 @@ public class DRMPreferencePage extends PreferencePage implements IWorkbenchPrefe
 
     // The list that displays the current pomPackagings
     private List pomPackagingList;
+    private Button pomPackagingSwitch;
+
     // The newPomPackagingText is the text where new pomPackaging are specified
     private Text newPomPackagingText;
     private GridData data_1;
     private Button debugSwitch;
     private Button nestedProjectFolderSwitch;
+    private Button fileNameListSwitch;
 
     /*
      * @see PreferencePage#createContents(Composite)
@@ -95,13 +99,15 @@ public class DRMPreferencePage extends PreferencePage implements IWorkbenchPrefe
 
     private void addFileNames(Composite entryTable) {
         GridData data;
-        Label label;
         Composite buttonComposite;
         GridLayout buttonLayout;
         Button addButton;
         Button removeButton;
-        label = new Label(entryTable, SWT.NONE);
-        label.setText("File Names");
+
+        fileNameListSwitch = new Button(entryTable, SWT.CHECK);
+        fileNameListSwitch.setSelection(PreferenceManager.getPreferencesForFileNameSwitch());
+        fileNameListSwitch.setText("File Names");
+        fileNameListSwitch.setEnabled(true);
 
         fileNameList = new List(entryTable, SWT.BORDER + SWT.V_SCROLL);
         fileNameList.setItems(getFileNamePrefs());
@@ -157,13 +163,15 @@ public class DRMPreferencePage extends PreferencePage implements IWorkbenchPrefe
 
     private void addPomPackaging(Composite entryTable) {
         GridData data;
-        Label label;
         Composite buttonComposite;
         GridLayout buttonLayout;
         Button addButton;
         Button removeButton;
-        label = new Label(entryTable, SWT.NONE);
-        label.setText("Pom Packaging");
+
+        pomPackagingSwitch = new Button(entryTable, SWT.CHECK);
+        pomPackagingSwitch.setSelection(PreferenceManager.getPreferencesForPomPackagingSwitch());
+        pomPackagingSwitch.setText("Pom Packaging");
+        pomPackagingSwitch.setEnabled(true);
 
         pomPackagingList = new List(entryTable, SWT.BORDER + SWT.V_SCROLL);
         pomPackagingList.setItems(getPomPackagingPrefs());
@@ -219,8 +227,11 @@ public class DRMPreferencePage extends PreferencePage implements IWorkbenchPrefe
 
     private void addFolderNamesPreferences(Composite entryTable) {
         GridData data;
-        Label label = new Label(entryTable, SWT.NONE);
-        label.setText("Folder Names");
+
+        folderNameListSwitch = new Button(entryTable, SWT.CHECK);
+        folderNameListSwitch.setSelection(PreferenceManager.getPreferencesForFolderNameSwitch());
+        folderNameListSwitch.setText("Folder Names");
+        folderNameListSwitch.setEnabled(true);
 
         folderNameList = new List(entryTable, SWT.BORDER + SWT.V_SCROLL);
         folderNameList.setItems(getFolderNamePrefs());
@@ -290,11 +301,18 @@ public class DRMPreferencePage extends PreferencePage implements IWorkbenchPrefe
     protected void performDefaults() {
         Names defaultPreferences = PreferenceManager.getDefaultPreferencesForFolderNames();
         folderNameList.setItems(defaultPreferences.getNames().toArray(new String[0]));
+        folderNameListSwitch.setSelection(PreferenceManager.getDefaultPreferencesForFolderNameSwitch());
+
         defaultPreferences = PreferenceManager.getDefaultPreferencesForPomPackaging();
         pomPackagingList.setItems(defaultPreferences.getNames().toArray(new String[0]));
+        pomPackagingSwitch.setSelection(PreferenceManager.getDefaultPreferencesForPomPackagingSwitch());
+
         defaultPreferences = PreferenceManager.getDefaultPreferencesForFileNames();
         fileNameList.setItems(defaultPreferences.getNames().toArray(new String[0]));
+        fileNameListSwitch.setSelection(PreferenceManager.getDefaultPreferencesForFileNameSwitch());
+
         nestedProjectFolderSwitch.setSelection(PreferenceManager.getDefaultPreferencesForNestedProjectFolders());
+
         debugSwitch.setSelection(PreferenceManager.getDefaultPreferencesForDebug());
     }
 
@@ -306,14 +324,22 @@ public class DRMPreferencePage extends PreferencePage implements IWorkbenchPrefe
         Names names = new Names();
         names.replace(folderNameList.getItems());
         PreferenceManager.savePreferencesForFolderNames(names);
+        PreferenceManager.savePreferencesForFolderNameSwitch(folderNameListSwitch.getSelection());
+
         names = new Names();
         names.replace(pomPackagingList.getItems());
         PreferenceManager.savePreferencesForPomPackaging(names);
+        PreferenceManager.savePreferencesForPomPackagingSwitch(pomPackagingSwitch.getSelection());
+
         names = new Names();
         names.replace(fileNameList.getItems());
         PreferenceManager.savePreferencesForFileNames(names);
+        PreferenceManager.savePreferencesForFileNameSwitch(fileNameListSwitch.getSelection());
+
         PreferenceManager.savePreferencesNestedProjectFolder(nestedProjectFolderSwitch.getSelection());
+
         PreferenceManager.savePreferencesDebug(debugSwitch.getSelection());
+
         return super.performOk();
     }
 
