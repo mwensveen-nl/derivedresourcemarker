@@ -1,11 +1,12 @@
 package nl.mwensveen.eclipse.drm.menutoolbar.handlers;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import nl.mwensveen.eclipse.drm.menutoolbar.inspectors.DebugInspector;
 import nl.mwensveen.eclipse.drm.menutoolbar.inspectors.DerivedResourceInspector;
 import nl.mwensveen.eclipse.drm.menutoolbar.inspectors.FilenameDerivedResourceInspector;
 import nl.mwensveen.eclipse.drm.menutoolbar.inspectors.FoldernameDerivedResourceInspector;
+import nl.mwensveen.eclipse.drm.menutoolbar.inspectors.NestedProjectFolderInspector;
 import nl.mwensveen.eclipse.drm.menutoolbar.inspectors.PomPackagingDerivedResourceInspector;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -24,10 +25,12 @@ public class DRMMenuToolbarHandler extends AbstractHandler {
     private ExecutionEvent event;
 
     public DRMMenuToolbarHandler() {
-        inspectors = new ArrayList<DerivedResourceInspector>();
-        inspectors.add(new PomPackagingDerivedResourceInspector());
-        inspectors.add(new FoldernameDerivedResourceInspector());
-        inspectors.add(new FilenameDerivedResourceInspector());
+        inspectors = Arrays.asList(
+                new DebugInspector(),
+                new PomPackagingDerivedResourceInspector(),
+                new FoldernameDerivedResourceInspector(),
+                new FilenameDerivedResourceInspector(),
+                new NestedProjectFolderInspector());
     }
 
     @Override
