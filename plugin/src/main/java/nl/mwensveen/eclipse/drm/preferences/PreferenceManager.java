@@ -62,7 +62,6 @@ public class PreferenceManager {
 
     private static void save(boolean b, String preferenceName) throws IOException {
         IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, PREFERENCE_STORE_QUALIFIER);
-        System.out.println("save in store: " + preferenceName + " " + b);
         store.setValue(preferenceName, Boolean.valueOf(b).toString());
     }
 
@@ -105,7 +104,6 @@ public class PreferenceManager {
 
     public static void savePreferencesNestedProjectFolder(boolean b) {
         try {
-            System.out.println("save " + DRMPreferenceConstants.NESTED_PROJECT_FOLDERS + "=" + b);
             save(b, DRMPreferenceConstants.NESTED_PROJECT_FOLDERS);
         } catch (IOException e) {
             e.printStackTrace();
@@ -142,7 +140,6 @@ public class PreferenceManager {
     }
 
     public static boolean getPreferencesForNestedProjectFolders() {
-        System.out.println("get " + DRMPreferenceConstants.NESTED_PROJECT_FOLDERS + " " + readBoolean(DRMPreferenceConstants.NESTED_PROJECT_FOLDERS));
         return readBoolean(DRMPreferenceConstants.NESTED_PROJECT_FOLDERS).orElse(getDefaultPreferencesForNestedProjectFolders());
     }
 
