@@ -25,6 +25,7 @@ public class PomPackagingDerivedResourceInspector implements DerivedResourceInsp
     private boolean isDerivedPomPackage;
     private Names derivedPomPackagingNames;
     private boolean pomPackagingSwitch;
+    private Boolean isDebug;
 
     @Override
     public void initProject(IProject project) {
@@ -45,10 +46,14 @@ public class PomPackagingDerivedResourceInspector implements DerivedResourceInsp
 
     @Override
     public boolean isDerived(IResource resource) {
+        boolean result = false;
         if (pomPackagingSwitch) {
-            return isDerivedPomPackage && !"pom.xml".equals(resource.getName());
+            result = isDerivedPomPackage && !"pom.xml".equals(resource.getName());
         }
-        return false;
+        if (isDebug) {
+            Platform.getLog(getClass()).info("PomPackaging result: " + result);
+        }
+        return result;
     }
 
     private String getPomPackaging(IFile pomFile) {
@@ -87,9 +92,13 @@ public class PomPackagingDerivedResourceInspector implements DerivedResourceInsp
 
     @Override
     public void init() {
+        isDebug = PreferenceManager.getPreferencesForDebug();
         pomPackagingSwitch = PreferenceManager.getPreferencesForPomPackagingSwitch();
         if (pomPackagingSwitch) {
             derivedPomPackagingNames = PreferenceManager.getPreferencesForPomPackaging();
+        }
+        if (isDebug) {
+            Platform.getLog(getClass()).info("PomPackaging? " + pomPackagingSwitch);
         }
     }
 }

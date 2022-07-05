@@ -7,7 +7,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Base64;
 import java.util.Optional;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.jface.preference.IPersistentPreferenceStore;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 
@@ -80,32 +82,51 @@ public class PreferenceManager {
 
     private static void save(Names names, String preferenceName) throws IOException {
         String namesString = serialize(names);
-        IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, PREFERENCE_STORE_QUALIFIER);
-        store.setValue(preferenceName, namesString);
+        save(namesString, preferenceName);
     }
 
     private static void save(boolean b, String preferenceName) throws IOException {
-        IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, PREFERENCE_STORE_QUALIFIER);
-        store.setValue(preferenceName, Boolean.valueOf(b).toString());
+        save(Boolean.valueOf(b).toString(), preferenceName);
     }
 
-    private static Optional<Names> read(String preferenceName) {
+    private static void save(String s, String preferenceName) throws IOException {
         IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, PREFERENCE_STORE_QUALIFIER);
-        String value = store.getString(preferenceName);
+        store.setValue(preferenceName, s);
+        if (store.needsSaving() && (store instanceof IPersistentPreferenceStore)) {
+            try {
+                ((IPersistentPreferenceStore) store).save();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Platform.getLog(Platform.getBundle("nl.mwensveen.eclipse.drm.")).info("No IPersistentPreferenceStore");
+        }
+    }
+
+    private static String read(String preferenceName) {
+        IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, PREFERENCE_STORE_QUALIFIER);
+        return store.getString(preferenceName);
+    }
+
+    private static Optional<Names> readNames(String preferenceName) {
+        String value = read(preferenceName);
         return Optional.ofNullable(deserialize(value));
     }
 
     private static Optional<Boolean> readBoolean(String preferenceName) {
-        IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, PREFERENCE_STORE_QUALIFIER);
-        String value = store.getString(preferenceName);
+        String value = read(preferenceName);
         return value.equals("") ? Optional.empty() : Optional.of(Boolean.valueOf(value));
+    }
+
+    private static Optional<Integer> readInteger(String preferenceName) {
+        String value = read(preferenceName);
+        return value.equals("") ? Optional.empty() : Optional.of(Integer.valueOf(value));
     }
 
     public static void savePreferencesForPomPackaging(Names names) {
         try {
             save(names, DRMPreferenceConstants.POM_PACKAGING);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -120,7 +141,7 @@ public class PreferenceManager {
 
     public static void savePreferencesDebug(boolean b) {
         try {
-            save(b, DRMPreferenceConstants.DEBUG);
+            save(b, DRMPreferenceConstants.DEBUG_SWITCH);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -128,7 +149,15 @@ public class PreferenceManager {
 
     public static void savePreferencesNestedProjectFolder(boolean b) {
         try {
-            save(b, DRMPreferenceConstants.NESTED_PROJECT_FOLDERS);
+            save(b, DRMPreferenceConstants.NESTED_PROJECT_FOLDERS_SWITCH);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void savePreferencesNestedProjectFolderDepth(Integer depth) {
+        try {
+            save(depth.toString(), DRMPreferenceConstants.NESTED_PROJECT_FOLDERS_DEPTH);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -148,19 +177,19 @@ public class PreferenceManager {
     }
 
     public static Names getPreferencesForFolderName() {
-        return read(DRMPreferenceConstants.FOLDER_NAME).orElse(getDefaultPreferencesForFolderNames());
+        return readNames(DRMPreferenceConstants.FOLDER_NAME).orElse(getDefaultPreferencesForFolderNames());
     }
 
     public static Names getPreferencesForPomPackaging() {
-        return read(DRMPreferenceConstants.POM_PACKAGING).orElse(getDefaultPreferencesForPomPackaging());
+        return readNames(DRMPreferenceConstants.POM_PACKAGING).orElse(getDefaultPreferencesForPomPackaging());
     }
 
     public static Names getPreferencesForFileName() {
-        return read(DRMPreferenceConstants.FILE_NAME).orElse(getDefaultPreferencesForFileNames());
+        return readNames(DRMPreferenceConstants.FILE_NAME).orElse(getDefaultPreferencesForFileNames());
     }
 
     public static Boolean getPreferencesForDebug() {
-        return readBoolean(DRMPreferenceConstants.DEBUG).orElse(getDefaultPreferencesForDebug());
+        return readBoolean(DRMPreferenceConstants.DEBUG_SWITCH).orElse(getDefaultPreferencesForDebug());
     }
 
     public static Boolean getPreferencesForFolderNameSwitch() {
@@ -172,7 +201,11 @@ public class PreferenceManager {
     }
 
     public static boolean getPreferencesForNestedProjectFolders() {
-        return readBoolean(DRMPreferenceConstants.NESTED_PROJECT_FOLDERS).orElse(getDefaultPreferencesForNestedProjectFolders());
+        return readBoolean(DRMPreferenceConstants.NESTED_PROJECT_FOLDERS_SWITCH).orElse(getDefaultPreferencesForNestedProjectFolders());
+    }
+
+    public static Integer getPreferencesForNestedProjectFoldersDepth() {
+        return readInteger(DRMPreferenceConstants.NESTED_PROJECT_FOLDERS_DEPTH).orElse(getDefaultPreferencesForNestedProjectFoldersDepth());
     }
 
     private static Names deserialize(String value) {
@@ -205,6 +238,10 @@ public class PreferenceManager {
 
     public static Boolean getDefaultPreferencesForFileNameSwitch() {
         return Boolean.TRUE;
+    }
+
+    public static Integer getDefaultPreferencesForNestedProjectFoldersDepth() {
+        return 2;
     }
 
 }

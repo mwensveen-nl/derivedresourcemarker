@@ -72,6 +72,9 @@ public class DRMMenuToolbarHandler extends AbstractHandler {
                 resource.setDerived(true, null);
             } else if (unmark) {
                 resource.setDerived(false, null);
+                if (resource.getType() == IResource.FOLDER) {
+                    Platform.getLog(getClass()).info(resource.getName() + " is folder");
+                }
             }
         } catch (CoreException e) {
             Platform.getLog(Platform.getBundle("nl.mwensveen.eclipse.plugins.drm-plugin")).log(e.getStatus());

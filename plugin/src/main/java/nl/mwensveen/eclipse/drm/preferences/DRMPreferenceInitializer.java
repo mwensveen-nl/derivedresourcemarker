@@ -21,8 +21,9 @@ public class DRMPreferenceInitializer extends AbstractPreferenceInitializer {
         store.setDefault(DRMPreferenceConstants.FILE_NAME, PreferenceManager.serialize(PreferenceManager.getDefaultPreferencesForFileNames()));
         store.setDefault(DRMPreferenceConstants.FOLDER_NAME, PreferenceManager.serialize(PreferenceManager.getDefaultPreferencesForFolderNames()));
         store.setDefault(DRMPreferenceConstants.POM_PACKAGING, PreferenceManager.serialize(PreferenceManager.getDefaultPreferencesForPomPackaging()));
-        store.setDefault(DRMPreferenceConstants.NESTED_PROJECT_FOLDERS, PreferenceManager.getDefaultPreferencesForNestedProjectFolders());
-        store.setDefault(DRMPreferenceConstants.DEBUG, PreferenceManager.getDefaultPreferencesForDebug());
+        store.setDefault(DRMPreferenceConstants.NESTED_PROJECT_FOLDERS_SWITCH, PreferenceManager.getDefaultPreferencesForNestedProjectFolders());
+        store.setDefault(DRMPreferenceConstants.NESTED_PROJECT_FOLDERS_DEPTH, PreferenceManager.getDefaultPreferencesForNestedProjectFoldersDepth());
+        store.setDefault(DRMPreferenceConstants.DEBUG_SWITCH, PreferenceManager.getDefaultPreferencesForDebug());
     }
 
 }

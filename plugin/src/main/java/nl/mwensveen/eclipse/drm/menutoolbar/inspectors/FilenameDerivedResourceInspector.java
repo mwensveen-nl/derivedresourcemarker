@@ -5,11 +5,13 @@ import nl.mwensveen.eclipse.drm.preferences.PreferenceManager;
 import nl.mwensveen.eclipse.drm.util.FileRegExpUtil;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.Platform;
 
 public class FilenameDerivedResourceInspector implements DerivedResourceInspector {
 
     private Names derivedFileNames;
     private Boolean fileNameSwitch;
+    private Boolean isDebug;
 
     @Override
     public void initProject(IProject project) {
@@ -18,21 +20,35 @@ public class FilenameDerivedResourceInspector implements DerivedResourceInspecto
 
     @Override
     public boolean isDerived(IResource resource) {
+        boolean result = false;
         if (fileNameSwitch) {
             String fileName = resource.getName();
             if (resource.getType() == IResource.FILE) {
-                return derivedFileNames.getNames().stream().filter(dfn -> FileRegExpUtil.matchesWildCard(dfn, fileName)).findAny().isPresent();
+                result = derivedFileNames.getNames().stream().filter(dfn -> FileRegExpUtil.matchesWildCard(dfn, fileName)).findAny().isPresent();
             }
         }
-        return false;
+        if (isDebug) {
+            Platform.getLog(getClass()).info("FileName result: " + result);
+        }
+        return result;
     }
 
     @Override
     public void init() {
+        isDebug = PreferenceManager.getPreferencesForDebug();
         fileNameSwitch = PreferenceManager.getPreferencesForFileNameSwitch();
+        if (isDebug) {
+            Platform.getLog(getClass()).info("FileName? " + fileNameSwitch);
+        }
         if (fileNameSwitch) {
             derivedFileNames = PreferenceManager.getPreferencesForFileName();
+            if (isDebug) {
+                StringBuilder sb = new StringBuilder();
+                derivedFileNames.getNames().forEach(n -> sb.append(n).append("\n"));
+                Platform.getLog(getClass()).info(sb.toString());
+            }
         }
+
     }
 
 }

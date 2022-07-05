@@ -16,11 +16,12 @@ public class DebugInspector implements DerivedResourceInspector {
     public void init() {
         isDebug = PreferenceManager.getPreferencesForDebug();
         if (isDebug) {
-            Platform.getLog(getClass()).info("Initializing Inspectors");
+            Platform.getLog(getClass()).info("Projects in Workspace");
             IWorkspace workspace = ResourcesPlugin.getWorkspace();
             IWorkspaceRoot root = workspace.getRoot();
             IProject[] projects = root.getProjects();
             Arrays.stream(projects).forEach(p -> Platform.getLog(getClass()).info("  --> " + p.getName() + " " + p.getLocation()));
+            Platform.getLog(getClass()).info("Initializing Inspectors");
         }
     }
 
@@ -34,7 +35,7 @@ public class DebugInspector implements DerivedResourceInspector {
     @Override
     public boolean isDerived(IResource resource) {
         if (isDebug) {
-            Platform.getLog(getClass()).info("Initializing resource " + resource.getName() + " " + resource.getLocation());
+            Platform.getLog(getClass()).info("Inspecting resource " + resource.getName() + " " + resource.getLocation());
         }
         return false;
     }

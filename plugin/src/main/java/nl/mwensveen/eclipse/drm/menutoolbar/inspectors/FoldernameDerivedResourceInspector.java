@@ -4,11 +4,13 @@ import nl.mwensveen.eclipse.drm.preferences.Names;
 import nl.mwensveen.eclipse.drm.preferences.PreferenceManager;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.Platform;
 
 public class FoldernameDerivedResourceInspector implements DerivedResourceInspector {
 
     private Boolean folderNameSwitch;
     private Names derivedFolderNames;
+    private Boolean isDebug;
 
     @Override
     public void initProject(IProject project) {
@@ -17,17 +19,25 @@ public class FoldernameDerivedResourceInspector implements DerivedResourceInspec
 
     @Override
     public boolean isDerived(IResource resource) {
+        boolean result = false;
         if (folderNameSwitch) {
-            return (resource.getType() == IResource.FOLDER) && derivedFolderNames.contains(resource.getName());
+            result = (resource.getType() == IResource.FOLDER) && derivedFolderNames.contains(resource.getName());
         }
-        return false;
+        if (isDebug) {
+            Platform.getLog(getClass()).info("Foldername result " + result);
+        }
+        return result;
     }
 
     @Override
     public void init() {
+        isDebug = PreferenceManager.getPreferencesForDebug();
         folderNameSwitch = PreferenceManager.getPreferencesForFolderNameSwitch();
         if (folderNameSwitch) {
             derivedFolderNames = PreferenceManager.getPreferencesForFolderName();
+        }
+        if (isDebug) {
+            Platform.getLog(getClass()).info("Foldername? " + folderNameSwitch);
         }
     }
 

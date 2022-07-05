@@ -11,7 +11,8 @@ public class DRMPreferenceConstants {
     public static final String POM_PACKAGING_SWITCH = "pomPackagingSwitch";
     public static final String FILE_NAME = "fileName";
     public static final String FILE_NAME_SWITCH = "fileNameSwitch";
-    public static final String NESTED_PROJECT_FOLDERS = "nestedProjectFolders";
-    public static final String DEBUG = "debug";
+    public static final String NESTED_PROJECT_FOLDERS_SWITCH = "nestedProjectFolders";
+    public static final String NESTED_PROJECT_FOLDERS_DEPTH = "nestedProjectFoldersDepth";
+    public static final String DEBUG_SWITCH = "debug";
 
 }

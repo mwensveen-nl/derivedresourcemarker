@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
@@ -53,6 +54,7 @@ public class DRMPreferencePage extends PreferencePage implements IWorkbenchPrefe
     private Button debugSwitch;
     private Button nestedProjectFolderSwitch;
     private Button fileNameListSwitch;
+    private Spinner nestedProjectFoldersDepth;
 
     /*
      * @see PreferencePage#createContents(Composite)
@@ -84,10 +86,19 @@ public class DRMPreferencePage extends PreferencePage implements IWorkbenchPrefe
     }
 
     private void addNestedProjectFolders(Composite entryTable) {
+        GridData data;
+
         nestedProjectFolderSwitch = new Button(entryTable, SWT.CHECK);
         nestedProjectFolderSwitch.setSelection(PreferenceManager.getPreferencesForNestedProjectFolders());
         nestedProjectFolderSwitch.setText("Nested Project Folders");
         nestedProjectFolderSwitch.setEnabled(true);
+
+        nestedProjectFoldersDepth = new Spinner(entryTable, SWT.BORDER);
+        nestedProjectFoldersDepth.setMinimum(1);
+        nestedProjectFoldersDepth.setMaximum(50);
+        nestedProjectFoldersDepth.setSelection(PreferenceManager.getPreferencesForNestedProjectFoldersDepth());
+        nestedProjectFoldersDepth.setIncrement(1);
+        nestedProjectFoldersDepth.setPageIncrement(10);
     }
 
     private void addDebug(Composite entryTable) {
@@ -312,6 +323,7 @@ public class DRMPreferencePage extends PreferencePage implements IWorkbenchPrefe
         fileNameListSwitch.setSelection(PreferenceManager.getDefaultPreferencesForFileNameSwitch());
 
         nestedProjectFolderSwitch.setSelection(PreferenceManager.getDefaultPreferencesForNestedProjectFolders());
+        nestedProjectFoldersDepth.setSelection(PreferenceManager.getDefaultPreferencesForNestedProjectFoldersDepth());
 
         debugSwitch.setSelection(PreferenceManager.getDefaultPreferencesForDebug());
     }
@@ -337,6 +349,7 @@ public class DRMPreferencePage extends PreferencePage implements IWorkbenchPrefe
         PreferenceManager.savePreferencesForFileNameSwitch(fileNameListSwitch.getSelection());
 
         PreferenceManager.savePreferencesNestedProjectFolder(nestedProjectFolderSwitch.getSelection());
+        PreferenceManager.savePreferencesNestedProjectFolderDepth(nestedProjectFoldersDepth.getSelection());
 
         PreferenceManager.savePreferencesDebug(debugSwitch.getSelection());
 
