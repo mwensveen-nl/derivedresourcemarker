@@ -45,9 +45,9 @@ public class PomPackagingDerivedResourceInspector implements DerivedResourceInsp
     }
 
     @Override
-    public boolean isDerived(IResource resource) {
+    public boolean isDerived(IResource resource, boolean unmark) {
         boolean result = false;
-        if (pomPackagingSwitch) {
+        if ((resource.getType() == IResource.FOLDER) && pomPackagingSwitch) {
             result = isDerivedPomPackage && !"pom.xml".equals(resource.getName());
         }
         if (isDebug) {

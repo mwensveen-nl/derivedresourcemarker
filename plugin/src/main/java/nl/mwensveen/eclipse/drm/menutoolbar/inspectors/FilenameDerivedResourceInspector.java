@@ -19,7 +19,7 @@ public class FilenameDerivedResourceInspector implements DerivedResourceInspecto
     }
 
     @Override
-    public boolean isDerived(IResource resource) {
+    public boolean isDerived(IResource resource, boolean unmark) {
         boolean result = false;
         if (fileNameSwitch) {
             String fileName = resource.getName();

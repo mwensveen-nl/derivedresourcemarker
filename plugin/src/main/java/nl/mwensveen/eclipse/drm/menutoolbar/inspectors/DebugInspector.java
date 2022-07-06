@@ -33,7 +33,7 @@ public class DebugInspector implements DerivedResourceInspector {
     }
 
     @Override
-    public boolean isDerived(IResource resource) {
+    public boolean isDerived(IResource resource, boolean unmark) {
         if (isDebug) {
             Platform.getLog(getClass()).info("Inspecting resource " + resource.getName() + " " + resource.getLocation());
         }

@@ -18,7 +18,7 @@ public class FoldernameDerivedResourceInspector implements DerivedResourceInspec
     }
 
     @Override
-    public boolean isDerived(IResource resource) {
+    public boolean isDerived(IResource resource, boolean unmark) {
         boolean result = false;
         if (folderNameSwitch) {
             result = (resource.getType() == IResource.FOLDER) && derivedFolderNames.contains(resource.getName());

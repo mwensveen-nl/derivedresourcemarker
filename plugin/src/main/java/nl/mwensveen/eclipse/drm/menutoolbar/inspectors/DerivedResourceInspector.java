@@ -21,7 +21,8 @@ public interface DerivedResourceInspector {
      * Must the resource be marked as derived?
      * 
      * @param resource
+     * @param unmark
      * @return true is the resource must be marked.
      */
-    boolean isDerived(IResource resource);
+    boolean isDerived(IResource resource, boolean unmark);
 }

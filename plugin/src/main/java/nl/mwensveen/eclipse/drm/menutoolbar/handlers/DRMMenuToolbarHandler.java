@@ -16,13 +16,16 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 public class DRMMenuToolbarHandler extends AbstractHandler {
+    private static final ILog LOG = Platform.getLog(Platform.getBundle("nl.mwensveen.eclipse.plugins.drm-plugin"));
     private List<DerivedResourceInspector> inspectors;
     private ExecutionEvent event;
+    private Integer folderDepth;
 
     public DRMMenuToolbarHandler() {
         inspectors = Arrays.asList(
@@ -45,7 +48,6 @@ public class DRMMenuToolbarHandler extends AbstractHandler {
             return null;
         }
         boolean unmark = PopupDialog.MARK_UNMARK_ID == returnCode;
-
         // init the inspectors first
         inspectors.forEach(DerivedResourceInspector::init);
 
@@ -61,23 +63,23 @@ public class DRMMenuToolbarHandler extends AbstractHandler {
         try {
             Arrays.stream(project.members()).forEach(r -> processResource(r, unmark));
         } catch (CoreException e) {
-            Platform.getLog(Platform.getBundle("nl.mwensveen.eclipse.plugins.drm-plugin")).log(e.getStatus());
+            LOG.log(e.getStatus());
         }
     }
 
     private void processResource(IResource resource, boolean unmark) {
         try {
-            boolean derived = inspectors.stream().filter(dri -> dri.isDerived(resource)).findFirst().isPresent();
+            boolean derived = inspectors.stream().filter(dri -> dri.isDerived(resource, unmark)).findFirst().isPresent();
             if (derived) {
                 resource.setDerived(true, null);
-            } else if (unmark) {
-                resource.setDerived(false, null);
-                if (resource.getType() == IResource.FOLDER) {
-                    Platform.getLog(getClass()).info(resource.getName() + " is folder");
+            } else {
+                if (unmark) {
+                    resource.setDerived(false, null);
                 }
             }
         } catch (CoreException e) {
-            Platform.getLog(Platform.getBundle("nl.mwensveen.eclipse.plugins.drm-plugin")).log(e.getStatus());
+            LOG.error("error getting members for " + resource.getName(), e);
         }
     }
+
 }
