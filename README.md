@@ -16,3 +16,14 @@ The plugin can use the pom packaging of a maven module to determine if the resou
 The plugin can be installed in Eclipse by using the update site.
 Which can be found [here](http://mwensveen-nl.github.io/derivedresourcemarker/)
  
+
+## Update version
+
+** ATTENTION do not change other versions manually **
+
+** all versions must be same BEFORE executiong set-version **
+
+** e.g. in all pom.xml files: `2.3.0-SNAPSHOT` and all eclipse files `[MANIFEST.MF, feature.xml, category.xml]`: `2.3.0.qualifier` **
+
+1. update the version in root `pom.xml`: e.g. `<newVersion>2.3.1-SNAPSHOT</newVersion>`
+2. execute: `mvn clean tycho-versions:set-version` and all versions are updated now
