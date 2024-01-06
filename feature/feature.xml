@@ -11,7 +11,7 @@
 <feature
       id="nl.mwensveen.eclipse.plugins.drm"
       label="%featureName"
-      version="6.1.1"
+      version="6.1.2.qualifier"
       provider-name="%providerName"
       plugin="nl.mwensveen.eclipse.plugins.drm-plugin">
 
@@ -31,7 +31,7 @@
          id="nl.mwensveen.eclipse.plugins.drm-plugin"
          download-size="0"
          install-size="0"
-         version="6.1.1"
+         version="6.1.2.qualifier"
          unpack="false"/>
 
 </feature>

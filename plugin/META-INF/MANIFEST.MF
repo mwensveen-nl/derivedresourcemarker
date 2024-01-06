@@ -2,12 +2,12 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Derived Resource Marker Plugin
 Bundle-SymbolicName: nl.mwensveen.eclipse.plugins.drm-plugin;singleton:=true
-Bundle-Version: 6.1.1
+Bundle-Version: 6.1.2.qualifier
 Bundle-Vendor: MWensveen.nl
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources;bundle-version="3.13.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ActivationPolicy: lazy
 Import-Package: org.eclipse.core.resources
 Export-Package: nl.mwensveen.eclipse.drm.util
