@@ -9,7 +9,9 @@
        <artifactId>nl.mwensveen.eclipse.plugins.drm-project</artifactId>
        <version>6.1.2-SNAPSHOT</version>
   </parent>
+  
   <artifactId>nl.mwensveen.eclipse.plugins.drm-repo</artifactId>
   <packaging>eclipse-repository</packaging>
   <name>Derived Resource Marker - Repo</name>
+
 </project>
