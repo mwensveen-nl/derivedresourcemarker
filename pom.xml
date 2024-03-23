@@ -8,21 +8,28 @@ available at https://www.eclipse.org/legal/epl-2.0/ -->
 	xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="https://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
 	<groupId>nl.mwensveen.derivedresourcemarker</groupId>
 	<artifactId>nl.mwensveen.eclipse.plugins.drm-project</artifactId>
 	<version>6.1.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
-
 	<name>Derived Resource Marker - Project</name>
-
 	<description>Eclipse plugin for Marking Resources as Derived.</description>
 
 	<properties>
 		<tycho-version>4.0.4</tycho-version>
-		<target.platform.classifier>eclipse-4.30</target.platform.classifier>
+		<target.platform.classifier>eclipse-4.31</target.platform.classifier>
 		<tests.use.ui>false</tests.use.ui>
 		<newVersion>6.1.2-SNAPSHOT</newVersion>
 	</properties>
+
+	<modules>
+		<module>platform</module>
+		<module>plugin</module>
+		<module>test</module>
+		<module>feature</module>
+		<module>repo</module>
+	</modules>
 
 	<build>
 		<pluginManagement>
@@ -238,13 +245,6 @@ available at https://www.eclipse.org/legal/epl-2.0/ -->
 
 		<defaultGoal>verify</defaultGoal>
 	</build>
-	<modules>
-		<module>platform</module>
-		<module>plugin</module>
-		<module>test</module>
-		<module>feature</module>
-		<module>repo</module>
-	</modules>
 	<profiles>
 		<profile>
 			<id>sign</id>

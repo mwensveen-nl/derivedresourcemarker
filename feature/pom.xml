@@ -2,24 +2,15 @@
 	xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="https://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
 	<parent>
 		<groupId>nl.mwensveen.derivedresourcemarker</groupId>
 		<artifactId>nl.mwensveen.eclipse.plugins.drm-project</artifactId>
 		<version>6.1.2-SNAPSHOT</version>
 	</parent>
+	
 	<artifactId>nl.mwensveen.eclipse.plugins.drm</artifactId>
 	<name>Derived Resource Marker - Feature</name>
 	<packaging>eclipse-feature</packaging>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-packaging-plugin</artifactId>
-				<version>${tycho-version}</version>
-				<configuration>
-					<deployableFeature>true</deployableFeature>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+	
 </project>
