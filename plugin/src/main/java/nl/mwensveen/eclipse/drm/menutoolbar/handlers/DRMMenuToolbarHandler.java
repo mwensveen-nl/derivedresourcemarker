@@ -2,12 +2,7 @@ package nl.mwensveen.eclipse.drm.menutoolbar.handlers;
 
 import java.util.Arrays;
 import java.util.List;
-import nl.mwensveen.eclipse.drm.menutoolbar.inspectors.DebugInspector;
-import nl.mwensveen.eclipse.drm.menutoolbar.inspectors.DerivedResourceInspector;
-import nl.mwensveen.eclipse.drm.menutoolbar.inspectors.FilenameDerivedResourceInspector;
-import nl.mwensveen.eclipse.drm.menutoolbar.inspectors.FoldernameDerivedResourceInspector;
-import nl.mwensveen.eclipse.drm.menutoolbar.inspectors.NestedProjectFolderInspector;
-import nl.mwensveen.eclipse.drm.menutoolbar.inspectors.PomPackagingDerivedResourceInspector;
+
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -21,65 +16,80 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import nl.mwensveen.eclipse.drm.menutoolbar.inspectors.DebugInspector;
+import nl.mwensveen.eclipse.drm.menutoolbar.inspectors.DerivedResourceInspector;
+import nl.mwensveen.eclipse.drm.menutoolbar.inspectors.FilenameDerivedResourceInspector;
+import nl.mwensveen.eclipse.drm.menutoolbar.inspectors.FoldernameDerivedResourceInspector;
+import nl.mwensveen.eclipse.drm.menutoolbar.inspectors.NestedProjectFolderInspector;
+import nl.mwensveen.eclipse.drm.menutoolbar.inspectors.PomPackagingDerivedResourceInspector;
+import nl.mwensveen.eclipse.drm.preferences.PreferenceManager;
+
 public class DRMMenuToolbarHandler extends AbstractHandler {
-    private static final ILog LOG = Platform.getLog(Platform.getBundle("nl.mwensveen.eclipse.plugins.drm-plugin"));
-    private List<DerivedResourceInspector> inspectors;
-    private ExecutionEvent event;
-    private Integer folderDepth;
+   private static final ILog LOG = Platform.getLog(Platform.getBundle("nl.mwensveen.eclipse.plugins.drm-plugin"));
+   private List<DerivedResourceInspector> inspectors;
+   private ExecutionEvent event;
+   private Integer folderDepth;
+   private NestedProjectFolderInspector nestedProjectFolderInspector = new NestedProjectFolderInspector();
+   private boolean isDebug;
 
-    public DRMMenuToolbarHandler() {
-        inspectors = Arrays.asList(
-                new DebugInspector(),
-                new PomPackagingDerivedResourceInspector(),
-                new FoldernameDerivedResourceInspector(),
-                new FilenameDerivedResourceInspector(),
-                new NestedProjectFolderInspector());
-    }
+   public DRMMenuToolbarHandler() {
+      inspectors = Arrays.asList(
+            new DebugInspector(),
+            new PomPackagingDerivedResourceInspector(),
+            new FoldernameDerivedResourceInspector(),
+            new FilenameDerivedResourceInspector(),
+            nestedProjectFolderInspector);
+      isDebug = PreferenceManager.getPreferencesForDebug();
+   }
 
-    @Override
-    public Object execute(ExecutionEvent event) throws ExecutionException {
-        this.event = event;
-        IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
+   @Override
+   public Object execute(ExecutionEvent event) throws ExecutionException {
+      this.event = event;
+      IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
 
-        PopupDialog popupDialog = new PopupDialog(window.getShell());
-        popupDialog.open();
-        int returnCode = popupDialog.getReturnCode();
-        if (PopupDialog.CANCEL == returnCode) {
-            return null;
-        }
-        boolean unmark = PopupDialog.MARK_UNMARK_ID == returnCode;
-        // init the inspectors first
-        inspectors.forEach(DerivedResourceInspector::init);
+      PopupDialog popupDialog = new PopupDialog(window.getShell());
+      popupDialog.open();
+      int returnCode = popupDialog.getReturnCode();
+      if (PopupDialog.CANCEL == returnCode) {
+         return null;
+      }
+      boolean unmark = PopupDialog.MARK_UNMARK_ID == returnCode;
+      // init the inspectors first
+      inspectors.forEach(DerivedResourceInspector::init);
 
-        IWorkspace workspace = ResourcesPlugin.getWorkspace();
-        Arrays.stream(workspace.getRoot().getProjects()).sequential().filter(p -> p.isOpen()).forEach(p -> processProject(p, unmark));
+      IWorkspace workspace = ResourcesPlugin.getWorkspace();
+      Arrays.stream(workspace.getRoot().getProjects()).sequential().filter(p -> p.isOpen()).forEach(p -> processProject(p, unmark));
+      nestedProjectFolderInspector.finish(workspace.getRoot().getProjects());
+      return null;
+   }
 
-        return null;
-    }
+   private void processProject(IProject project, boolean unmark) {
+      // initalize the inspectors for this project.
+      inspectors.stream().forEach(dri -> dri.initProject(project));
+      try {
+         Arrays.stream(project.members()).forEach(r -> processResource(r, unmark));
+      } catch (CoreException e) {
+         LOG.log(e.getStatus());
+      }
+   }
 
-    private void processProject(IProject project, boolean unmark) {
-        // initalize the inspectors for this project.
-        inspectors.stream().forEach(dri -> dri.initProject(project));
-        try {
-            Arrays.stream(project.members()).forEach(r -> processResource(r, unmark));
-        } catch (CoreException e) {
-            LOG.log(e.getStatus());
-        }
-    }
-
-    private void processResource(IResource resource, boolean unmark) {
-        try {
-            boolean derived = inspectors.stream().filter(dri -> dri.isDerived(resource, unmark)).findFirst().isPresent();
-            if (derived) {
-                resource.setDerived(true, null);
-            } else {
-                if (unmark) {
-                    resource.setDerived(false, null);
-                }
+   private void processResource(IResource resource, boolean unmark) {
+      try {
+         boolean derived = inspectors.stream().filter(dri -> dri.isDerived(resource, unmark)).count() > 0;
+         if (derived) {
+            resource.setDerived(true, null);
+            if (isDebug) {
+               Platform.getLog(getClass()).info(resource.getFullPath() + " marked as derived");
             }
-        } catch (CoreException e) {
-            LOG.error("error getting members for " + resource.getName(), e);
-        }
-    }
+         } else {
+            if (unmark) {
+               resource.setDerived(false, null);
+               Platform.getLog(getClass()).info(resource.getFullPath() + " marked as not derived");
+            }
+         }
+      } catch (CoreException e) {
+         LOG.error("error getting members for " + resource.getName(), e);
+      }
+   }
 
 }
