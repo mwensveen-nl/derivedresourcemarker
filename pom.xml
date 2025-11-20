@@ -11,7 +11,7 @@ available at https://www.eclipse.org/legal/epl-2.0/ -->
 
 	<groupId>nl.mwensveen.derivedresourcemarker</groupId>
 	<artifactId>nl.mwensveen.eclipse.plugins.drm-project</artifactId>
-	<version>6.1.2-SNAPSHOT</version>
+	<version>6.2.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Derived Resource Marker - Project</name>
 	<description>Eclipse plugin for Marking Resources as Derived.</description>
@@ -20,7 +20,7 @@ available at https://www.eclipse.org/legal/epl-2.0/ -->
 		<tycho-version>4.0.4</tycho-version>
 		<target.platform.classifier>eclipse-4.31</target.platform.classifier>
 		<tests.use.ui>false</tests.use.ui>
-		<newVersion>6.1.2-SNAPSHOT</newVersion>
+		<newVersion>6.2.1-SNAPSHOT</newVersion>
 	</properties>
 
 	<modules>

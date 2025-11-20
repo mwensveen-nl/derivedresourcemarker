@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: nl.mwensveen.eclipse.plugins.drm-plugin.test
 Bundle-SymbolicName: nl.mwensveen.eclipse.plugins.drm-plugin.test
-Bundle-Version: 6.1.2.qualifier
+Bundle-Version: 6.2.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Require-Bundle: 
  org.eclipse.core.resources;bundle-version="[3.13.0,4.0.0)",
